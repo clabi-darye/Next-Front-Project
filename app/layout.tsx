@@ -16,7 +16,7 @@ const RootLayout = ({
     <html lang="ko">
       <body>
         <PersistentDrawer></PersistentDrawer>
-        {children}
+        <main>{children}</main>
       </body>
     </html>
   );

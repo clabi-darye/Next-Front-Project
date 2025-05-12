@@ -1,22 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useDrawerStore } from "../store/useDrawerStore";
 import { useChatHistoryStore } from "../store/useChatHistoryStore";
 import { drawerWidth, drawerMenuList } from "../config/drawer.config";
 
-import {
-  Collapse,
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { Drawer, IconButton, List } from "@mui/material";
+import DrawerMenuItem from "./DrawerMenuItem";
+
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { DrawerItem } from "../types/Drawer";
@@ -24,42 +17,20 @@ import { DrawerItem } from "../types/Drawer";
 const PersistentDrawer = () => {
   const router = useRouter();
   const { isOpen, setOpen } = useDrawerStore();
-
-  const [historyListOpen, setHistoryListOpen] = useState(true);
-
   const { histories } = useChatHistoryStore();
 
-  const renderDrawerItem = (drawerItem: DrawerItem) => {
-    if (drawerItem.key === "history" && histories.length === 0) return null;
+  const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({});
 
-    const buttonStyle = {
-      backgroundColor: "#fff",
-      color: "#000",
-      margin: "0 1rem",
-      borderRadius: "10px",
-      ":hover": {
-        backgroundColor: "#f5f5f5",
-      },
-    };
+  useEffect(() => {
+    const initialToggles = drawerMenuList
+      .filter((item) => item.type === "toggle")
+      .reduce((acc, item) => {
+        acc[item.key] = true;
+        return acc;
+      }, {} as Record<string, boolean>);
 
-    return (
-      <React.Fragment key={drawerItem.key}>
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => handleListItemClick(drawerItem)}
-            sx={drawerItem.type === "button" ? buttonStyle : {}}
-          >
-            <ListItemIcon sx={{ color: "inherit" }}>
-              {drawerItem.icon && <drawerItem.icon />}
-            </ListItemIcon>
-            <ListItemText primary={drawerItem.title} />
-          </ListItemButton>
-        </ListItem>
-
-        {drawerItem.key === "history" && renderHistoryList()}
-      </React.Fragment>
-    );
-  };
+    setToggleStates(initialToggles);
+  }, []);
 
   const handleListItemClick = (drawerItem: DrawerItem) => {
     if (drawerItem.link) {
@@ -67,42 +38,17 @@ const PersistentDrawer = () => {
       return;
     }
 
-    switch (drawerItem.key) {
-      case "style":
-        console.log("스타일 변경 다이얼로그 open");
-        break;
-      case "history":
-        setHistoryListOpen((prev) => !prev);
-        break;
-      default:
-        break;
+    if (drawerItem.type === "toggle") {
+      setToggleStates((prev) => ({
+        ...prev,
+        [drawerItem.key]: !prev[drawerItem.key],
+      }));
+      return;
     }
-  };
 
-  const renderHistoryList = () => {
-    return (
-      <Collapse in={historyListOpen} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding key="histories">
-          {histories.map((history, index) => (
-            <ListItemButton
-              sx={{ pl: 4, py: "2px" }}
-              key={`${history.title}-${index}`}
-            >
-              <ListItemIcon sx={{ minWidth: "32px" }} />
-              <ListItemText
-                primary={history.title}
-                sx={{
-                  fontSize: "14px",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              />
-            </ListItemButton>
-          ))}
-        </List>
-      </Collapse>
-    );
+    if (drawerItem.key === "style") {
+      console.log("스타일 변경 다이얼로그 open");
+    }
   };
 
   return (
@@ -148,7 +94,16 @@ const PersistentDrawer = () => {
           className="bg-drawer-bg text-drawer-text h-[100vh] overflow-auto"
           key="drawerItems"
         >
-          {drawerMenuList.map((menu) => renderDrawerItem(menu))}
+          {drawerMenuList.map((menu) =>
+            menu.key === "history" && histories.length === 0 ? null : (
+              <DrawerMenuItem
+                key={menu.key}
+                item={menu}
+                isOpen={toggleStates[menu.key] ?? false}
+                onClick={handleListItemClick}
+              />
+            )
+          )}
         </List>
       </Drawer>
     </>

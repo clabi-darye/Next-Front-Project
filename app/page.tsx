@@ -1,7 +1,7 @@
-"use client";
+import HomePage from "./Home/page";
 
-const Home = () => {
-  return <div>home</div>;
+const App = () => {
+  return <HomePage />;
 };
 
-export default Home;
+export default App;

@@ -3,18 +3,18 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { useDrawerStore } from "../store/useDrawerStore";
-import { useChatHistoryStore } from "../store/useChatHistoryStore";
-import { drawerWidth, drawerMenuList } from "../config/drawer.config";
+import { useDrawerStore } from "../../store/useDrawerStore";
+import { useChatHistoryStore } from "../../store/useChatHistoryStore";
+import { drawerWidth, drawerMenuList } from "../../config/drawer.config";
 
 import { Drawer, IconButton, List } from "@mui/material";
 import DrawerMenuItem from "./DrawerMenuItem";
 
 import MenuIcon from "@mui/icons-material/Menu";
 
-import { DrawerItem } from "../types/Drawer";
+import { DrawerItem } from "../../types/Drawer";
 
-const PersistentDrawer = () => {
+const CustomDrawer = () => {
   const router = useRouter();
   const { isOpen, setOpen } = useDrawerStore();
   const { histories } = useChatHistoryStore();
@@ -31,6 +31,10 @@ const PersistentDrawer = () => {
 
     setToggleStates(initialToggles);
   }, []);
+
+  useEffect(() => {
+    router.prefetch("/chat");
+  }, [router]);
 
   const handleListItemClick = (drawerItem: DrawerItem) => {
     if (drawerItem.link) {
@@ -110,4 +114,4 @@ const PersistentDrawer = () => {
   );
 };
 
-export default PersistentDrawer;
+export default CustomDrawer;

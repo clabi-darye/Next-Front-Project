@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
-import PersistentDrawer from "@/components/PersistentDrawer";
+import { Providers } from "./providers";
+import PersistentDrawer from "@/components/Drawer/CustomDrawer";
 
 export const metadata: Metadata = {
   title: "Chat Bot Template",
@@ -15,8 +16,10 @@ const RootLayout = ({
   return (
     <html lang="ko">
       <body>
-        <PersistentDrawer></PersistentDrawer>
-        <main>{children}</main>
+        <Providers>
+          <PersistentDrawer></PersistentDrawer>
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   );

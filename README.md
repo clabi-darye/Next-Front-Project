@@ -4,6 +4,18 @@ Chat Bot Template 입니다.
 
 ## 기능
 
+### Drawer
+
+기본적으로 아래 4가지의 메뉴가 있다.
+
+- 홈
+- 스타일 변경
+- 새 대화 시작
+- 최근 질문
+
+메뉴는 `config/drawer.config`에서 추가 가능하다.
+Drawer Color는 `app/globals.css`에서 변경 가능하다.
+
 ## 설치 및 실행
 
 npm install

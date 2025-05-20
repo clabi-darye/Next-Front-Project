@@ -4,15 +4,21 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 :root {
+  /* globals */
+  --point: #6182f3;
+
+  /* drawer */
   --drawer-bg: #004785;
   --drawer-text: #ffffff;
-  --point: #6182f3;
 }
 
 .dark {
+  /* globals */
+  --point: #6182f3;
+
+  /* drawer */
   --drawer-bg: #004785;
   --drawer-text: #ffffff;
-  --point: #6182f3;
 }
 
 @theme {

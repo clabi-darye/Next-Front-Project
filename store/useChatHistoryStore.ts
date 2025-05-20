@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { History } from '../types/ChatHistory';
+import { create } from "zustand";
+import { History } from "../types/ChatHistory";
 
 interface ChatHistoryState {
   histories: History[];

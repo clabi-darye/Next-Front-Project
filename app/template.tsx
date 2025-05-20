@@ -1,6 +1,6 @@
 "use client";
 
-import { useDrawerStore } from "../store/useDrawerStore";
+import { useDrawerStore } from "@/store/useDrawerStore";
 import { drawerWidth } from "../config/drawer.config";
 
 const Template = ({ children }: { children: React.ReactNode }) => {

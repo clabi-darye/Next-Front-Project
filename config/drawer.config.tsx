@@ -4,7 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
-import ChatHistoryList from "@/components/ChatHistoryList";
+import ChatHistoryList from "@/components/Drawer/ChatHistoryList";
 
 export const drawerWidth = 240;
 

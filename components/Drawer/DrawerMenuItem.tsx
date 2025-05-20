@@ -10,7 +10,7 @@ import {
   Collapse,
 } from "@mui/material";
 
-import { DrawerItem } from "../types/Drawer";
+import { DrawerItem } from "@/types/Drawer";
 
 interface Props {
   item: DrawerItem;

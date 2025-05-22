@@ -27,6 +27,9 @@ const DrawerMenuItem = ({ item, isOpen, onClick }: Props) => {
     ":hover": {
       backgroundColor: "#f5f5f5",
     },
+    "& > .MuiListItemIcon-root": {
+      justifyContent: "center",
+    },
   };
 
   return (

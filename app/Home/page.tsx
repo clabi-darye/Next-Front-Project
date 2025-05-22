@@ -5,14 +5,21 @@ import { useGrerting, usePromptInput } from "@/hooks/useHomeData";
 
 import Image from "next/image";
 import SearchBar from "@/components/SearchBar";
+import { useChatStore } from "@/store/useChatStore";
+import { useEffect } from "react";
 
 const HomePage = () => {
   const { data: promptInputData } = usePromptInput();
   const { data: grertingData } = useGrerting();
+  const { setSearchText } = useChatStore();
+
+  useEffect(() => {
+    setSearchText("");
+  }, []);
 
   return (
     <div className="h-full w-full p-[1rem] flex flex-col items-center">
-      <div className="flex-1 overflow-auto flex flex-col items-center justify-center min-w-[640px]">
+      <div className="flex-1 overflow-auto flex flex-col items-center justify-center md:min-w-[640px]">
         <Image src={homeConfig.logo} alt="logo" />
         <div
           className="mt-4 text-center"

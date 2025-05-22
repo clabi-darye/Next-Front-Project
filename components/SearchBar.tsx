@@ -61,11 +61,13 @@ const SearchBar = ({
         />
       </div>
 
-      {listening && (
-        <div className="absolute top-[8px] left-[16px] w-[calc(100%-60px)]">
-          <VoiceVisualizer />
-        </div>
-      )}
+      <div
+        className={`absolute top-[8px] left-[16px] w-[calc(100%-60px)] ${
+          listening ? "" : "hidden"
+        }`}
+      >
+        <VoiceVisualizer />
+      </div>
 
       {SearchBoxConfig.isVoiceSearch && (
         <VoiceSearch onSearch={setSearchText} />

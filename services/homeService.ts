@@ -1,4 +1,4 @@
-import baseService from "../baseService";
+import { baseService } from "./baseService";
 
 export const fetchPromptInput = async (): Promise<{
   id: number;

@@ -6,6 +6,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import Link from "next/link";
 
 const ChatHistoryList = () => {
   const { histories } = useChatHistoryStore();
@@ -18,15 +19,17 @@ const ChatHistoryList = () => {
           key={`${item.title}-${index}`}
         >
           <ListItemIcon sx={{ minWidth: "32px" }} />
-          <ListItemText
-            primary={item.title}
-            sx={{
-              fontSize: "14px",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          />
+          <Link href={`/chat/${item.shareCode}`}>
+            <ListItemText
+              primary={item.title}
+              sx={{
+                fontSize: "14px",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            />
+          </Link>
         </ListItemButton>
       ))}
     </List>

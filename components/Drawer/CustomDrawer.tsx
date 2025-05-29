@@ -13,11 +13,12 @@ import DrawerMenuItem from "./DrawerMenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { DrawerItem } from "../../types/Drawer";
+import { getAllChatGroupsFromIndexedDB } from "@/utils/indexedDB";
 
 const CustomDrawer = () => {
   const router = useRouter();
   const { isOpen, setOpen } = useDrawerStore();
-  const { histories } = useChatHistoryStore();
+  const { histories, setHistories } = useChatHistoryStore();
 
   const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({});
 
@@ -30,6 +31,10 @@ const CustomDrawer = () => {
       }, {} as Record<string, boolean>);
 
     setToggleStates(initialToggles);
+
+    getAllChatGroupsFromIndexedDB().then((list) => {
+      setHistories(list);
+    });
   }, []);
 
   useEffect(() => {

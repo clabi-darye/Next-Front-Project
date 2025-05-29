@@ -7,36 +7,36 @@ export interface ChatGroupResponse {
 }
 
 export interface Chat {
-  chat_id: number;
-  ip_address: string;
   chat_question: string;
   chat_answer: string;
-  use_token_count: number;
-  latency: number;
-  action: string;
-  sub_action: string;
-  recommended_questions: [
-    {
-      question: string;
-      answer: string;
-    }
-  ];
-  references: [
-    {
-      referenceType: string;
-      referenceContent: string;
-    }
-  ];
-  images: [
-    {
-      imageUrl: string;
-      imageType: string;
-    }
-  ];
-  chat_history_list: {
-    [key: string]: string;
+  chat_group_id?: number;
+  chat_id?: number;
+  chat_ai_group_id?: number;
+  created_at?: string;
+  updated_at?: string;
+  ip_address?: string;
+  use_token_count?: number;
+  latency?: number;
+  action?: string;
+  sub_action?: string;
+  recommended_questions?: {
+    question: string;
+    answer: string;
   }[];
-  chat_group_id: number;
-  created_at: string;
-  updated_at: string;
+  references?:
+    | {
+        referenceType: string;
+        referenceContent: string;
+      }[]
+    | null;
+  images?:
+    | {
+        imageUrl: string;
+        imageType: string;
+      }[]
+    | null;
+  chat_history_list?: {
+    type: string;
+    text: string;
+  }[];
 }

@@ -4,9 +4,12 @@ import { History } from "../types/ChatHistory";
 interface ChatHistoryState {
   histories: History[];
   setHistories: (histories: History[]) => void;
+  addHistory: (history: History) => void;
 }
 
 export const useChatHistoryStore = create<ChatHistoryState>((set) => ({
   histories: [],
   setHistories: (histories) => set({ histories }),
+  addHistory: (history: History) =>
+    set((state) => ({ histories: [...state.histories, history] })),
 }));

@@ -16,8 +16,11 @@ const HomePage = () => {
 
   const { data: promptInputData } = usePromptInput();
 
-  const handleSearch = async (query: string) => {
-    router.push(`/chat/${base64Encode(query.trim())}`);
+  const handleSearch = async (searchText: string) => {
+    const obj = {
+      title: searchText,
+    };
+    router.push(`/chat/${base64Encode(JSON.stringify(obj))}`);
   };
 
   return (

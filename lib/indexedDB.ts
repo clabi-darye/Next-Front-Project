@@ -1,7 +1,7 @@
 const DB_NAME = process.env.NEXT_PUBLIC_DATABASE_NAME || "Clabi";
 const STORE_NAME = "Chat";
 
-export const getAllChatGroupsFromIndexedDB = (): Promise<
+export const getAllChatGroups = (): Promise<
   Array<{ id: number; title: string; shareCode: string }>
 > => {
   return new Promise((resolve, reject) => {
@@ -31,7 +31,7 @@ export const getAllChatGroupsFromIndexedDB = (): Promise<
   });
 };
 
-export const saveChatGroupToIndexedDB = async ({
+export const saveChatGroup = async ({
   id,
   title,
   shareCode,

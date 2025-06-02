@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { base64Encode } from "@/utils/encoding";
 import { homeConfig } from "@/config/home.config";
-import { usePromptInput } from "@/hooks/useHomeData";
+import { useFetchPromptInput } from "@/hooks/useHomeData";
 
 import Image from "next/image";
 import SearchBar from "@/components/SearchBar";
@@ -14,7 +14,7 @@ import AiDisclaimer from "@/components/AiDisclaimer";
 const HomePage = () => {
   const router = useRouter();
 
-  const { data: promptInputData } = usePromptInput();
+  const { data: promptInputData } = useFetchPromptInput();
 
   const handleSearch = async (searchText: string) => {
     const obj = {

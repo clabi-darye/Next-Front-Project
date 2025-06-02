@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchGreeting, fetchPromptInput } from "@/services/homeService";
 
-export const usePromptInput = () => {
+export const useFetchPromptInput = () => {
   return useQuery({
     queryKey: ["PromptInput"],
     queryFn: fetchPromptInput,
@@ -9,7 +9,7 @@ export const usePromptInput = () => {
   });
 };
 
-export const useGreeting = () => {
+export const useFetchGreeting = () => {
   return useQuery({
     queryKey: ["Greeting"],
     queryFn: fetchGreeting,

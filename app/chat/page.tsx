@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { base64Encode } from "@/utils/encoding";
-import { usePromptInput } from "@/hooks/useHomeData";
+import { useFetchPromptInput } from "@/hooks/useHomeData";
 
 import Greeting from "@/components/Greeting";
 import SearchBar from "@/components/SearchBar";
@@ -11,7 +11,7 @@ import SearchBar from "@/components/SearchBar";
 const ChatPage = () => {
   const router = useRouter();
 
-  const { data: promptInputData } = usePromptInput();
+  const { data: promptInputData } = useFetchPromptInput();
 
   const handleSearch = async (searchText: string) => {
     const obj = {

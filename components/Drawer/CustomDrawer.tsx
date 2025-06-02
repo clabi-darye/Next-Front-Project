@@ -13,7 +13,7 @@ import DrawerMenuItem from "./DrawerMenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { DrawerItem } from "../../types/Drawer";
-import { getAllChatGroupsFromIndexedDB } from "@/utils/indexedDB";
+import { getAllChatGroups } from "@/lib/indexedDB";
 
 const CustomDrawer = () => {
   const router = useRouter();
@@ -32,7 +32,7 @@ const CustomDrawer = () => {
 
     setToggleStates(initialToggles);
 
-    getAllChatGroupsFromIndexedDB().then((list) => {
+    getAllChatGroups().then((list) => {
       setHistories(list);
     });
   }, []);

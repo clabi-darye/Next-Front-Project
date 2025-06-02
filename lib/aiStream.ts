@@ -1,4 +1,3 @@
-import { parseStreamEvent } from "@/utils/parseEvent";
 import { StreamEndEvent, StreamEvent } from "@/types/Stream";
 
 export const processAiStream = async (
@@ -37,7 +36,7 @@ export const processAiStream = async (
         }
 
         if (eventType === "ClarioMessageID" && eventId) {
-          onEvent({ type: "eventId", eventId });
+          onEvent({ type: "eventId", eventId, text: "" });
         }
       }
     }
@@ -48,4 +47,21 @@ export const processAiStream = async (
       onError?.(new Error("Unknown stream processing error"));
     }
   }
+};
+
+const parseStreamEvent = (raw: string) => {
+  const lines = raw.split("\n");
+  const result: { eventType?: string; eventData?: string; eventId?: string } =
+    {};
+
+  for (const line of lines) {
+    if (line.startsWith("event:"))
+      result.eventType = line.replace("event:", "").trim();
+    else if (line.startsWith("data:"))
+      result.eventData = line.replace("data:", "").trim();
+    else if (line.startsWith("id:"))
+      result.eventId = line.replace("id:", "").trim();
+  }
+
+  return result;
 };

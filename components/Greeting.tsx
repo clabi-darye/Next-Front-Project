@@ -1,8 +1,8 @@
 import React from "react";
-import { useGreeting } from "@/hooks/useHomeData";
+import { useFetchGreeting } from "@/hooks/useHomeData";
 
 const Greeting = ({ className }: { className?: string }) => {
-  const { data: greetingData } = useGreeting();
+  const { data: greetingData } = useFetchGreeting();
 
   return (
     <div

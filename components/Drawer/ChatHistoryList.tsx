@@ -16,24 +16,41 @@ const ChatHistoryList = () => {
     <List component="div" disablePadding key="histories">
       {histories.map((item, index) => (
         <ListItemButton
-          sx={{ pl: 4, py: "2px" }}
+          sx={{
+            pl: 4,
+            py: "2px",
+            "&:hover .more-icon": {
+              display: "inline-flex",
+            },
+          }}
           key={`${item.title}-${index}`}
         >
           <Link
             href={`/chat/${item.shareCode}`}
-            className="w-[80%] flex align-center"
+            className="w-[calc(100%-32px)] flex align-center"
           >
             <ListItemText
-              className="flex align-center truncate"
+              className="flex align-center"
               primary={item.title}
+              sx={{ maxWidth: 200 }}
+              slotProps={{
+                primary: {
+                  sx: {
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    width: "100%",
+                  },
+                },
+              }}
             />
           </Link>
           <ListItemIcon
-            className=""
+            className="more-icon ml-2"
             sx={{
-              minWidth: "32px",
+              minWidth: "24px",
               display: "none",
-              "&:hover": { display: "inline-flex" },
+              cursor: "pointer",
             }}
             onClick={(e) => {
               e.stopPropagation();

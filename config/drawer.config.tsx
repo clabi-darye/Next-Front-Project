@@ -6,11 +6,15 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import ChatHistoryList from "@/components/Drawer/ChatHistoryList";
 
-export const drawerWidth = 240;
+// Drawer 전역 설정 값
+export const drawerConfig = {
+  drawerWidth: 240, // drawer 너비(px)
+  showLogo: true, // 로고 표시 여부
+  activeMenu: ["chat", "history"], // 표시할 메뉴 key 값들
+};
 
 export const drawerMenuList: DrawerItem[] = [
   {
-    id: 1,
     key: "home",
     title: "홈",
     icon: SearchIcon,
@@ -18,14 +22,12 @@ export const drawerMenuList: DrawerItem[] = [
     link: "/",
   },
   {
-    id: 2,
     key: "style",
     title: "스타일 변경",
     icon: TuneIcon,
     type: "menu",
   },
   {
-    id: 3,
     key: "chat",
     title: "새 대화 시작",
     icon: AddCircleOutlineOutlinedIcon,
@@ -33,11 +35,10 @@ export const drawerMenuList: DrawerItem[] = [
     link: "/chat",
   },
   {
-    id: 3,
     key: "history",
     title: "최근 질문",
     icon: ExpandMoreOutlinedIcon,
-    type: "toggle",
-    subList: <ChatHistoryList />,
+    type: "toggle", // 토글형 메뉴 (펼침/접힘)
+    subList: <ChatHistoryList />, // 토글 펼침 시 렌더링할 컴포넌트
   },
 ];

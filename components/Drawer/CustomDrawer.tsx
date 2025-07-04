@@ -5,23 +5,33 @@ import { useRouter } from "next/navigation";
 
 import { useDrawerStore } from "../../store/useDrawerStore";
 import { useChatHistoryStore } from "../../store/useChatHistoryStore";
-import { drawerWidth, drawerMenuList } from "../../config/drawer.config";
+import { drawerConfig, drawerMenuList } from "../../config/drawer.config";
+import { getAllChatGroups } from "@/lib/indexedDB";
+
+import Image from "next/image";
+import Link from "next/link";
 
 import { Drawer, IconButton, List } from "@mui/material";
 import DrawerMenuItem from "./DrawerMenuItem";
+import { DrawerItem } from "../../types/Drawer";
 
 import MenuIcon from "@mui/icons-material/Menu";
-
-import { DrawerItem } from "../../types/Drawer";
-import { getAllChatGroups } from "@/lib/indexedDB";
+import Logo from "@/public/images/drawer-logo.png";
 
 const CustomDrawer = () => {
   const router = useRouter();
+
   const { isOpen, setOpen } = useDrawerStore();
   const { histories, setHistories } = useChatHistoryStore();
 
   const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({});
 
+  // drawerConfig.activeMenu에 있는 메뉴만 필터링
+  const filteredMenuList: DrawerItem[] = drawerConfig.activeMenu
+    .map((key) => drawerMenuList.find((item) => item.key === key))
+    .filter((item): item is DrawerItem => item !== undefined);
+
+  // 초기화: toggle 메뉴 초기 상태 및 indexedDB 대화 목록 불러오기
   useEffect(() => {
     const initialToggles = drawerMenuList
       .filter((item) => item.type === "toggle")
@@ -37,10 +47,12 @@ const CustomDrawer = () => {
     });
   }, []);
 
+  // 미리 chat 페이지 prefetch
   useEffect(() => {
     router.prefetch("/chat");
   }, [router]);
 
+  // Drawer 메뉴 항목 클릭 핸들러
   const handleListItemClick = (drawerItem: DrawerItem) => {
     if (drawerItem.link) {
       router.push(drawerItem.link);
@@ -62,7 +74,7 @@ const CustomDrawer = () => {
 
   return (
     <>
-      {/* toggle icon */}
+      {/* 상단 좌측 toggle button (Drawer 열기용) */}
       <div className="px-2 pt-1 fixed">
         <IconButton
           onClick={() => {
@@ -75,10 +87,10 @@ const CustomDrawer = () => {
 
       <Drawer
         sx={{
-          width: drawerWidth,
+          width: drawerConfig.drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: drawerWidth,
+            width: drawerConfig.drawerWidth,
             boxSizing: "border-box",
           },
         }}
@@ -86,8 +98,8 @@ const CustomDrawer = () => {
         anchor="left"
         open={isOpen}
       >
-        {/* toggle icon */}
-        <div className="px-2 pt-1 bg-drawer-bg text-drawer-text">
+        {/* Drawer 상단 영역: 메뉴 아이콘 + 로고 */}
+        <div className="p-2 bg-drawer-bg text-drawer-text flex items-center">
           <IconButton
             color="inherit"
             onClick={() => {
@@ -96,14 +108,19 @@ const CustomDrawer = () => {
           >
             <MenuIcon></MenuIcon>
           </IconButton>
+          {drawerConfig.showLogo && (
+            <Link href="/" className="h-[27px] ml-6">
+              <Image src={Logo} alt="logo" className="h-full w-auto" />
+            </Link>
+          )}
         </div>
 
-        {/* Drawer Item*/}
+        {/* Drawer 메뉴 리스트 */}
         <List
           className="bg-drawer-bg text-drawer-text h-[100vh] overflow-auto"
           key="drawerItems"
         >
-          {drawerMenuList.map((menu) =>
+          {filteredMenuList.map((menu) =>
             menu.key === "history" && histories.length === 0 ? null : (
               <DrawerMenuItem
                 key={menu.key}

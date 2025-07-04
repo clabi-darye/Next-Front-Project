@@ -1,7 +1,7 @@
 "use client";
 
 import { useDrawerStore } from "@/store/useDrawerStore";
-import { drawerWidth } from "../config/drawer.config";
+import { drawerConfig } from "../config/drawer.config";
 
 const Template = ({ children }: { children: React.ReactNode }) => {
   const { isOpen } = useDrawerStore();
@@ -10,8 +10,8 @@ const Template = ({ children }: { children: React.ReactNode }) => {
     <section
       className="h-[100vh]"
       style={{
-        width: `calc(100% - ${isOpen ? drawerWidth : 0}px)`,
-        marginLeft: `${isOpen ? drawerWidth : 0}px`,
+        width: `calc(100% - ${isOpen ? drawerConfig.drawerWidth : 0}px)`,
+        marginLeft: `${isOpen ? drawerConfig.drawerWidth : 0}px`,
         transitionDuration: "0.225s",
       }}
     >

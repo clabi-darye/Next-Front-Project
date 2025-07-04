@@ -22,7 +22,7 @@ const DrawerMenuItem = ({ item, isOpen, onClick }: Props) => {
   const buttonStyle = {
     backgroundColor: "#fff",
     color: "#000",
-    margin: "0 1rem",
+    margin: "0.5rem 1rem",
     borderRadius: "10px",
     ":hover": {
       backgroundColor: "#f5f5f5",

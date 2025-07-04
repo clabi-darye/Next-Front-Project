@@ -1,5 +1,4 @@
 export interface DrawerItem {
-  id: number;
   key: string;
   title: string;
   type: "menu" | "button" | "toggle";

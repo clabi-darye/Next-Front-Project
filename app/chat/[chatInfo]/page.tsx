@@ -21,8 +21,8 @@ const ChatDetailPage = ({
     useAiStreaming(chatInfo);
 
   return (
-    <div className="h-full w-full flex flex-col justify-between overflow-y-auto">
-      <div>
+    <div className="h-full w-full flex flex-col justify-between">
+      <div className="flex-1 overflow-y-auto p-4">
         <QuestionView type="bold" question={question} />
         <StreamStagesView
           className="my-4"
@@ -32,7 +32,7 @@ const ChatDetailPage = ({
         <AnswerView streamText={streamText} />
       </div>
       <SearchBar
-        className="mt-8 mx-auto"
+        className="mt-4 mx-auto"
         placeholder={promptInputData.input}
         onSearch={handleSearch}
       />

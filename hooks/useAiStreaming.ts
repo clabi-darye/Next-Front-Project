@@ -49,9 +49,11 @@ export const useAiStreaming = (chatInfo: string) => {
         console.log(data);
         setIsFinished(true);
 
-        setStreamText(data.chats[0].chat_answer);
-        setStreamStages(data.chats[0].chat_history_list ?? []);
-        setQuestion(data.chats[0].chat_question);
+        if (data.chats.length > 0) {
+          setStreamText(data.chats[0].chat_answer);
+          setStreamStages(data.chats[0].chat_history_list ?? []);
+          setQuestion(data.chats[0].chat_question);
+        }
       });
     }
   }, [chatInfo]);

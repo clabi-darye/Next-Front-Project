@@ -5,16 +5,19 @@ import { useRouter } from "next/navigation";
 import { base64Encode } from "@/utils/encoding";
 import { homeConfig } from "@/config/home.config";
 import { useFetchPromptInput } from "@/hooks/useHomeData";
+import { useFilterStore } from "@/store/useDrawerStore";
 
 import Image from "next/image";
 import SearchBar from "@/components/SearchBar";
 import Greeting from "@/components/Greeting";
 import AiDisclaimer from "@/components/AiDisclaimer";
+import { Chip, Stack } from "@mui/material";
 
 const HomePage = () => {
   const router = useRouter();
 
   const { data: promptInputData } = useFetchPromptInput();
+  const filterTags = useFilterStore((state) => state.filterTags);
 
   const handleSearch = async (searchText: string) => {
     const obj = {
@@ -29,10 +32,42 @@ const HomePage = () => {
         <Image src={homeConfig.logo} alt="logo" />
         <Greeting className="mt-4" />
         <SearchBar
-          className="mt-8"
+          className="mt-8 w-full"
           placeholder={promptInputData.input}
           onSearch={handleSearch}
         />
+
+        <Stack
+          spacing={{ xs: 1, sm: 1 }}
+          direction="row"
+          useFlexGap
+          className="mt-4"
+          sx={{
+            justifyContent: "center",
+            alignItems: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          {filterTags.length > 0 &&
+            filterTags.map((tag, index) => (
+              <Chip
+                label={tag}
+                key={`${tag}_${index}`}
+                sx={{
+                  backgroundColor: "var(--tag-bg)",
+                  color: "var(--tag-text)",
+                  borderRadius: "8px",
+                  px: 0.75,
+                  py: 0.5,
+                  height: "auto",
+                  "& .MuiChip-label": {
+                    display: "block",
+                    whiteSpace: "normal",
+                  },
+                }}
+              />
+            ))}
+        </Stack>
       </div>
       <AiDisclaimer className="mt-2" />
     </div>

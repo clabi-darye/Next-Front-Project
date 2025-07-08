@@ -21,6 +21,10 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
+import { Filter } from "@/types/Filter";
+import { useFilterStore } from "@/store/useDrawerStore";
+
+// Mock data for filters
 const Data = [
   {
     id: 1,
@@ -70,21 +74,52 @@ const Data = [
     parent: 5,
     description: "회전기기",
   },
+  {
+    id: 9,
+    depth: 1,
+    parent: null,
+    description: "대분류",
+  },
+  {
+    id: 10,
+    depth: 2,
+    parent: 9,
+    description: "중분류",
+  },
+  {
+    id: 11,
+    depth: 3,
+    parent: 9,
+    description: "소분류",
+  },
+  {
+    id: 12,
+    depth: 3,
+    parent: 9,
+    description: "소분류",
+  },
+  {
+    id: 13,
+    depth: 3,
+    parent: 9,
+    description: "소분류",
+  },
 ];
 
-export interface Filter {
-  id: number;
-  depth: number;
-  parent: number | null;
-  description: string;
-}
-
-const SearchFilter = () => {
-  const [isFavoritesOpen, setIsFavoritesOpen] = useState(true); // 즐겨찾기 토글
+const SearchFilter = ({
+  filterTitle = "즐겨찾기",
+}: {
+  filterTitle?: string;
+}) => {
+  const [isFilterOpen, setIsFilterOpen] = useState(true); // 즐겨찾기 토글
   const [isFilterVisible, setIsFilterVisible] = useState(true); // 필터 항목만 토글
 
-  const [selectedFilters, setSelectedFilters] = useState<Filter[]>([]);
   const [filters, setfilters] = useState<Filter[]>([]);
+
+  const selectedFilters = useFilterStore((state) => state.selectedFilters);
+  const setSelectedFilters = useFilterStore(
+    (state) => state.setSelectedFilters
+  );
 
   useEffect(() => {
     setfilters(Data);
@@ -153,9 +188,9 @@ const SearchFilter = () => {
         }}
       />
 
-      {/* 즐겨찾기 */}
+      {/* filterTitle */}
       <ListItemButton
-        onClick={() => setIsFavoritesOpen(!isFavoritesOpen)}
+        onClick={() => setIsFilterOpen(!isFilterOpen)}
         sx={{ height: "30px", mt: 1, ml: 1 }}
       >
         <ListItemText
@@ -168,23 +203,18 @@ const SearchFilter = () => {
             },
           }}
         >
-          즐겨찾기
+          {filterTitle}
         </ListItemText>
         <ListItemIcon sx={{ color: "inherit", minWidth: 32 }}>
           <ExpandMoreIcon
             sx={{
               transition: "transform 0.3s ease",
-              transform: !isFavoritesOpen ? "rotate(180deg)" : "none",
+              transform: !isFilterOpen ? "rotate(180deg)" : "none",
             }}
           />
         </ListItemIcon>
       </ListItemButton>
-      <Collapse
-        in={isFavoritesOpen}
-        timeout="auto"
-        unmountOnExit
-        sx={{ ml: 1 }}
-      >
+      <Collapse in={isFilterOpen} timeout="auto" unmountOnExit sx={{ ml: 1 }}>
         {/* 전체 선택 */}
         <SelectAllListItemButton key="all">
           <StyledListItemText

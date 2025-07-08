@@ -25,6 +25,7 @@ export const useFilterStore = create<FilterState>((set) => ({
       selectedFilters: filters,
       filterTags: filters
         .filter((f: Filter) => f.depth === 3 && f.description)
+        .sort((a, b) => (a.id ?? 0) - (b.id ?? 0))
         .map((f: Filter) => f.description),
     });
   },

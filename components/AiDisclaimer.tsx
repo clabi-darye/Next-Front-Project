@@ -1,0 +1,13 @@
+import React from "react";
+import { homeConfig } from "@/config/home.config";
+
+const AiDisclaimer = ({ className }: { className?: string }) => {
+  return (
+    <div
+      className={`text-gray-400 text-xs ${className}`}
+      dangerouslySetInnerHTML={{ __html: homeConfig.aiDisclaimer }}
+    ></div>
+  );
+};
+
+export default AiDisclaimer;

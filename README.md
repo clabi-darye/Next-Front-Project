@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 프로젝트 개요
 
-## Getting Started
+Chat Bot Template 입니다.
 
-First, run the development server:
+## 기능
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Drawer
+
+기본적으로 아래 4가지의 메뉴가 있습니다.
+
+- 홈
+- 스타일 변경
+- 새 대화 시작
+- 최근 질문
+
+메뉴는 `config/drawer.config`에서 추가 가능합니다.
+Drawer Color는 `app/globals.css`에서 변경 가능합니다.
+
+### Home Page
+
+사용자는 검색 기능을 통해 질문을 입력할 수 있습니다.
+검색을 실행하면 Chat Page로 이동하여 결과를 확인합니다.
+
+### Chat Page
+
+Chat Page에 진입하면 다음과 같은 순서로 동작이 수행됩니다:
+
+1. 채팅 그룹 생성
+2. AI API 호출을 통해 응답 수신
+3. 채팅 데이터 저장
+4. IndexedDB에 데이터 저장
+
+#### IndexedDB 저장 구조
+
+```ts
+{
+  id: number; // 채팅 그룹 ID
+  title: string; // 채팅 제목
+  shareCode: string; // 대화 내용 불러올 때 사용됩니다.
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 설치 및 실행
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`npm install`
+`npm run start`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 기술 스택
 
-## Learn More
+[next.js](https://nextjs.org/)
+[TypeScript](https://www.typescriptlang.org/)
 
-To learn more about Next.js, take a look at the following resources:
+## 추가 라이브러리
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+[Tailwind CSS](https://tailwindcss.com/)
+[Material UI](https://mui.com/material-ui/getting-started/installation/)
+[Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction)
+[react-markdown](https://github.com/remarkjs/react-markdown)
+[msw](https://mswjs.io/)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 추후 개발
 
-## Deploy on Vercel
+### Drawer
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- history 수정, 삭제, 저장 기능 개발
+- history 순서 변경 기능 개발
+- 스타일 변경 기능 개발
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Chat Page
+
+- 멀티턴 기능 개발
+- 새로운 AI 로직으로 변경
+- 설정 기능 개발
+- 공유 기능 개발
+
+### 기타
+
+- 공유 페이지 개발

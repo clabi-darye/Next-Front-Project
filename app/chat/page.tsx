@@ -7,10 +7,13 @@ import { useProjectInfoStore } from "@/store/useCommonStore";
 
 import Greeting from "@/components/Greeting";
 import SearchBar from "@/components/SearchBar";
+import Image from "next/image";
+import { homeConfig } from "@/config/home.config";
 
 const ChatPage = () => {
   const router = useRouter();
 
+  const greeting = useProjectInfoStore((state) => state.greeting);
   const prompt = useProjectInfoStore((state) => state.prompt);
 
   const handleSearch = async (searchText: string) => {
@@ -21,10 +24,18 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center">
+    <div className="h-full w-full flex flex-col items-center justify-center md:max-w-[640px] m-auto">
+      {greeting.light_logo_url && (
+        <Image
+          src={greeting.light_logo_url || homeConfig.logo}
+          width={300}
+          height={100}
+          alt="logo"
+        />
+      )}
       <Greeting />
       <SearchBar
-        className="mt-8"
+        className="mt-8 mx-2 w-full"
         placeholder={prompt.input}
         onSearch={handleSearch}
       />

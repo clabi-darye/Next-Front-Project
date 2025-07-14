@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import PersistentDrawer from "@/components/Drawer/CustomDrawer";
 import { MSWComponent } from "./MSWComponent";
+import { AppInitializer } from "@/components/AppInitializer";
 
 export const metadata: Metadata = {
   title: "Chat Bot Template",
@@ -19,6 +20,7 @@ const RootLayout = ({
       <body>
         <MSWComponent>
           <Providers>
+            <AppInitializer />
             <PersistentDrawer></PersistentDrawer>
             <main>{children}</main>
           </Providers>

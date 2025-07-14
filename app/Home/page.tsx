@@ -30,7 +30,7 @@ const HomePage = () => {
 
   return (
     <div className="h-full w-full p-[1rem] flex flex-col items-center">
-      <div className="flex-1 overflow-auto flex flex-col items-center justify-center md:min-w-[640px]">
+      <div className="flex-1 overflow-auto flex flex-col items-center justify-center w-full md:max-w-[640px]">
         {greeting.light_logo_url && (
           <Image
             src={greeting.light_logo_url || homeConfig.logo}

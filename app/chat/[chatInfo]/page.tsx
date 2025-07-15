@@ -1,17 +1,21 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import React, { use, useEffect, useRef, useState } from "react";
 import { useAiStreaming } from "@/hooks/useAiStreaming";
 import { useCreateChatGroup, useFetchSavedChat } from "@/hooks/useChatData";
 import { base64Decode } from "@/utils/encoding";
-import { useProjectInfoStore } from "@/store/useCommonStore";
+import { useFetchSetting } from "@/hooks/useHomeData";
 
 import SearchBar from "@/components/SearchBar";
 import QuestionView from "@/components/Chat/QuestionView";
 import StreamStagesView from "@/components/Chat/StreamStagesView";
 import AnswerView from "@/components/Chat/AnswerView";
 import RecommendedQuestions from "@/components/Chat/RecommendedQuestions";
+
+import ChatVoiceIcon from "@/public/icons/ChatVoiceIcon";
+import ChatDislikeIcon from "@/public/icons/ChatDislikeIcon";
+import ChatlikeIcon from "@/public/icons/ChatlikeIcon";
+import ChatCopyIcon from "@/public/icons/ChatCopyIcon";
 
 import { ChatListItem } from "@/types/Chat";
 
@@ -20,7 +24,7 @@ const ChatDetailPage = ({
 }: {
   params: Promise<{ chatInfo: string }>;
 }) => {
-  const prompt = useProjectInfoStore((state) => state.prompt);
+  const { data: settingData } = useFetchSetting();
 
   const { chatInfo } = use(params);
   const { mutateAsync: fetchSavedChat } = useFetchSavedChat();
@@ -36,9 +40,13 @@ const ChatDetailPage = ({
   const chatWrapRef = useRef<HTMLDivElement>(null);
 
   const handleCreate = async (title: string) => {
-    const chatGroup = await createChatGroup({ title });
-    setChatGroupId(chatGroup.chat_group_id);
-    setNewQuestion(title);
+    try {
+      const chatGroup = await createChatGroup({ title });
+      setChatGroupId(chatGroup.chat_group_id);
+      setNewQuestion(title);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // 초기 마운트 시 처리
@@ -113,6 +121,13 @@ const ChatDetailPage = ({
                   {chat.streamText && (
                     <AnswerView streamText={chat.streamText} />
                   )}
+                  <div className="bg-gray-200 p-2">출처</div>
+                  <div className="flex items-center gap-1 mt-2">
+                    <ChatCopyIcon />
+                    <ChatlikeIcon />
+                    <ChatDislikeIcon />
+                    <ChatVoiceIcon />
+                  </div>
                   {chat.recommendedQuestions &&
                     chat.recommendedQuestions.length > 0 && (
                       <RecommendedQuestions
@@ -154,8 +169,8 @@ const ChatDetailPage = ({
       </div>
 
       <SearchBar
-        className="mt-4 mx-auto"
-        placeholder={prompt.input}
+        className="mt-4 mx-auto w-[90%]"
+        placeholder={settingData.prompt.input}
         onSearch={handleSearch}
       />
     </div>

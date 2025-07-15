@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { useFilterStore } from "@/store/useFilterStore";
+
 import {
   Collapse,
   InputAdornment,
@@ -9,6 +11,8 @@ import {
   ListItemText,
   TextField,
 } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import {
   SelectAllListItemButton,
@@ -18,11 +22,7 @@ import {
   StyledListItemText,
 } from "./styles";
 
-import SearchIcon from "@mui/icons-material/Search";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
 import { Filter } from "@/types/Filter";
-import { useFilterStore } from "@/store/useDrawerStore";
 
 // Mock data for filters
 const Data = [

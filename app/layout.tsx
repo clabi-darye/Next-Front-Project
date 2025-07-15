@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 
-import "./globals.css";
 import { Providers } from "./providers";
-import PersistentDrawer from "@/components/Drawer/CustomDrawer";
 import { MSWComponent } from "./MSWComponent";
-import { AppInitializer } from "@/components/AppInitializer";
+
+import PersistentDrawer from "@/components/Drawer/CustomDrawer";
+import AppInitializer from "@/components/AppInitializer";
+
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Chat Bot Template",

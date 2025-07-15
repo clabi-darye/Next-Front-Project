@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { base64Encode } from "@/utils/encoding";
-import { useProjectInfoStore } from "@/store/useCommonStore";
+import { useFetchSetting } from "@/hooks/useHomeData";
 
 import Greeting from "@/components/Greeting";
 import SearchBar from "@/components/SearchBar";
@@ -13,10 +13,9 @@ import { homeConfig } from "@/config/home.config";
 const ChatPage = () => {
   const router = useRouter();
 
-  const greeting = useProjectInfoStore((state) => state.greeting);
-  const prompt = useProjectInfoStore((state) => state.prompt);
+  const { data: settingData } = useFetchSetting();
 
-  const handleSearch = async (searchText: string) => {
+  const handleSearch = (searchText: string) => {
     const obj = {
       title: searchText,
     };
@@ -25,9 +24,9 @@ const ChatPage = () => {
 
   return (
     <div className="h-full w-full flex flex-col items-center justify-center md:max-w-[640px] m-auto">
-      {greeting.light_logo_url && (
+      {settingData.greeting.light_logo_url && (
         <Image
-          src={greeting.light_logo_url || homeConfig.logo}
+          src={settingData.greeting.light_logo_url || homeConfig.logo}
           width={300}
           height={100}
           alt="logo"
@@ -36,7 +35,7 @@ const ChatPage = () => {
       <Greeting />
       <SearchBar
         className="mt-8 mx-2 w-full"
-        placeholder={prompt.input}
+        placeholder={settingData.prompt.input}
         onSearch={handleSearch}
       />
     </div>

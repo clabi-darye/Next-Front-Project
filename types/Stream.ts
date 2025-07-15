@@ -26,6 +26,11 @@ export interface StreamEndEvent {
     imageUrl: string;
     imageType: string;
   }[];
+  next_endpoint?: string;
+  form?: unknown;
+  transfer_data?: unknown[];
+  re_select_data?: unknown;
+  re_answer_data?: unknown;
   [key: string]: unknown;
 }
 

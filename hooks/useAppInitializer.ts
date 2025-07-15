@@ -1,18 +1,21 @@
+"use client";
+
 import { useEffect } from "react";
 import { useFetchSetting } from "@/hooks/useHomeData";
-import { useProjectInfoStore } from "@/store/useCommonStore";
 import { saveIp } from "@/services/commonService";
 
 export const useAppInitializer = () => {
   const { data: settingData } = useFetchSetting();
 
   useEffect(() => {
-    saveIp();
+    (async () => {
+      try {
+        await saveIp();
+      } catch (e) {
+        console.error("IP 저장 실패:", e);
+      }
+    })();
   }, []);
 
-  useEffect(() => {
-    if (settingData) {
-      useProjectInfoStore.getState().setInfo(settingData);
-    }
-  }, [settingData]);
+  return { settingData };
 };

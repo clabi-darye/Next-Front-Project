@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 
 import { useDrawerStore } from "../../store/useDrawerStore";
 import { useChatHistoryStore } from "../../store/useChatHistoryStore";
-import { useProjectInfoStore } from "@/store/useCommonStore";
 import { drawerConfig, drawerMenuList } from "../../config/drawer.config";
 import { getAllChatGroups } from "@/lib/indexedDB";
+import { useFetchSetting } from "@/hooks/useHomeData";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -29,9 +29,13 @@ import Logo from "@/public/images/drawer-logo.png";
 const CustomDrawer = () => {
   const router = useRouter();
 
-  const { isOpen, setOpen } = useDrawerStore();
-  const { histories, setHistories } = useChatHistoryStore();
-  const greeting = useProjectInfoStore((state) => state.greeting);
+  const { data: settingData } = useFetchSetting();
+
+  const isOpen = useDrawerStore((state) => state.isOpen);
+  const setOpen = useDrawerStore((state) => state.setOpen);
+
+  const histories = useChatHistoryStore((state) => state.histories);
+  const setHistories = useChatHistoryStore((state) => state.setHistories);
 
   const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({});
 
@@ -128,10 +132,10 @@ const CustomDrawer = () => {
           >
             <MenuIcon></MenuIcon>
           </IconButton>
-          {drawerConfig.showLogo && greeting.light_logo_url && (
+          {drawerConfig.showLogo && settingData.greeting.light_logo_url && (
             <Link href="/" className="h-[27px] ml-6">
               <Image
-                src={greeting.light_logo_url || Logo}
+                src={settingData.greeting.light_logo_url || Logo}
                 alt="logo"
                 width={60}
                 height={10}

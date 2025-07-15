@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 
 import { base64Encode } from "@/utils/encoding";
-import { useFilterStore } from "@/store/useDrawerStore";
-import { useProjectInfoStore } from "@/store/useCommonStore";
+import { useFilterStore } from "@/store/useFilterStore";
+import { useFetchSetting } from "@/hooks/useHomeData";
 
 import Image from "next/image";
 import SearchBar from "@/components/SearchBar";
@@ -17,11 +17,11 @@ import { homeConfig } from "@/config/home.config";
 const HomePage = () => {
   const router = useRouter();
 
-  const filterTags = useFilterStore((state) => state.filterTags);
-  const greeting = useProjectInfoStore((state) => state.greeting);
-  const prompt = useProjectInfoStore((state) => state.prompt);
+  const { data: settingData } = useFetchSetting();
 
-  const handleSearch = async (searchText: string) => {
+  const filterTags = useFilterStore((state) => state.filterTags);
+
+  const handleSearch = (searchText: string) => {
     const obj = {
       title: searchText,
     };
@@ -31,9 +31,9 @@ const HomePage = () => {
   return (
     <div className="h-full w-full p-[1rem] flex flex-col items-center">
       <div className="flex-1 overflow-auto flex flex-col items-center justify-center w-full md:max-w-[640px]">
-        {greeting.light_logo_url && (
+        {settingData.greeting.light_logo_url && (
           <Image
-            src={greeting.light_logo_url || homeConfig.logo}
+            src={settingData.greeting.light_logo_url || homeConfig.logo}
             width={300}
             height={100}
             alt="logo"
@@ -42,7 +42,7 @@ const HomePage = () => {
         <Greeting className="mt-4" />
         <SearchBar
           className="mt-8 w-full"
-          placeholder={prompt.input}
+          placeholder={settingData.prompt.input}
           onSearch={handleSearch}
         />
 

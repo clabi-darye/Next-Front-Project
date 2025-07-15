@@ -18,5 +18,5 @@ export const fetchSetting = async (): Promise<{
   }[];
 }> => {
   const response = await baseService.get(`/setting/all`);
-  return response.data.data;
+  return response.data;
 };

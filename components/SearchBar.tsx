@@ -33,7 +33,7 @@ const SearchBar = ({
   };
 
   return (
-    <div className={`relative w-full flex items-center ${className}`}>
+    <div className={`relative flex items-center ${className}`}>
       <div className="flex-1 py-2 px-3 border border-[var(--point)] rounded-3xl">
         <Input
           fullWidth

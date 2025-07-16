@@ -28,6 +28,8 @@ export const useAiStreaming = (
     streamStagesRef,
     recommendedQuestions,
     setRecommendedQuestions,
+    references,
+    setReferences,
     isFinished,
     completeStream,
     appendStage,
@@ -102,8 +104,6 @@ export const useAiStreaming = (
 
     if (!chatGroupId) return;
 
-    saveChatHistory(event, chatGroupId);
-
     if (event.next_endpoint) {
       controllerRef.current?.abort();
 
@@ -123,6 +123,8 @@ export const useAiStreaming = (
       );
     }
 
+    saveChatHistory(event, chatGroupId);
+
     completeStream();
   };
 
@@ -130,12 +132,24 @@ export const useAiStreaming = (
     event: StreamEndEvent,
     chatGroupId: number
   ) => {
+    if (event.type === "all" && !event.chat_question) {
+      appendText(
+        event.chat_question ||
+          "현재 서비스가 원할하지 못합니다. 서비스팀에 문의해주세요."
+      );
+
+      return;
+    }
+
     const chatData = formatChatSaveData(
       event,
       chatGroupId,
       streamStagesRef.current
     );
+
     setRecommendedQuestions(chatData.recommended_questions);
+    setReferences(chatData.references);
+
     saveChat({ chatData });
 
     const shareCodeData = await createShareCode({ groupId: chatGroupId });
@@ -170,6 +184,7 @@ export const useAiStreaming = (
     streamText,
     streamStages,
     recommendedQuestions,
+    references,
     isFinished,
     isStreaming,
     hasError,

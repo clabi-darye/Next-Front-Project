@@ -10,6 +10,7 @@ export const createChatGroup = async (
 };
 
 export const saveChat = async (chatData: Chat): Promise<ChatGroupResponse> => {
+  console.log(chatData);
   const response = await baseService.post(`/chat`, chatData);
   return response.data;
 };

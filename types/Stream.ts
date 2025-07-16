@@ -1,3 +1,5 @@
+import { Reference } from "./Chat";
+
 export interface StreamEvent {
   type: string;
   text: string;
@@ -16,12 +18,9 @@ export interface StreamEndEvent {
   sub_action?: string;
   use_token_count?: number;
   latency?: number;
-  recommended_questions?: string[];
+  recommended_questions?: string | string[];
   chat_history_list?: StreamEvent[];
-  reference?: {
-    referenceType: string;
-    referenceContent: string;
-  }[];
+  references?: Reference[];
   images?: {
     imageUrl: string;
     imageType: string;
@@ -31,6 +30,7 @@ export interface StreamEndEvent {
   transfer_data?: unknown[];
   re_select_data?: unknown;
   re_answer_data?: unknown;
+  select_items?: unknown[];
   [key: string]: unknown;
 }
 

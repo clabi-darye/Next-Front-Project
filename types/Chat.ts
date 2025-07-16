@@ -6,6 +6,24 @@ export interface ChatGroupResponse {
   updated_at: string;
 }
 
+export interface Reference {
+  type: string;
+  id: string;
+  title: string;
+  title_nm: string;
+  text: string;
+  publication_year: string;
+  page_no: string;
+  code: string;
+  host: string[];
+  [key: string]: unknown;
+}
+
+export interface RecommendedQuestions {
+  answer: string;
+  question: string;
+}
+
 export interface Chat {
   chat_question: string;
   chat_answer: string;
@@ -20,12 +38,7 @@ export interface Chat {
   action?: string;
   sub_action?: string;
   recommended_questions?: RecommendedQuestions[];
-  references?:
-    | {
-        referenceType: string;
-        referenceContent: string;
-      }[]
-    | null;
+  references?: Reference[];
   images?:
     | {
         imageUrl: string;
@@ -46,9 +59,5 @@ export interface ChatListItem {
   }[];
   streamText: string;
   recommendedQuestions?: RecommendedQuestions[];
-}
-
-export interface RecommendedQuestions {
-  answer: string;
-  question: string;
+  references?: Reference[];
 }

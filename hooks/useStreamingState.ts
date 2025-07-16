@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
+
 import type { StreamEvent } from "@/types/Stream";
-import type { RecommendedQuestions } from "@/types/Chat";
+import type { RecommendedQuestions, Reference } from "@/types/Chat";
 
 export const useStreamingState = () => {
   const [streamText, setStreamText] = useState("");
@@ -8,6 +9,7 @@ export const useStreamingState = () => {
   const [recommendedQuestions, setRecommendedQuestions] = useState<
     RecommendedQuestions[]
   >([]);
+  const [references, setReferences] = useState<Reference[]>([]);
   const [isFinished, setIsFinished] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -34,6 +36,8 @@ export const useStreamingState = () => {
     streamStagesRef,
     recommendedQuestions,
     setRecommendedQuestions,
+    references,
+    setReferences,
     isFinished,
     appendStage,
     appendText,

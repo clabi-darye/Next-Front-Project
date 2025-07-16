@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { useAiStreaming } from "@/hooks/useAiStreaming";
 import { useCreateChatGroup, useFetchSavedChat } from "@/hooks/useChatData";
 import { base64Decode } from "@/utils/encoding";
@@ -10,12 +10,9 @@ import SearchBar from "@/components/SearchBar";
 import QuestionView from "@/components/Chat/QuestionView";
 import StreamStagesView from "@/components/Chat/StreamStagesView";
 import AnswerView from "@/components/Chat/AnswerView";
-import RecommendedQuestions from "@/components/Chat/RecommendedQuestions";
-
-import ChatVoiceIcon from "@/public/icons/ChatVoiceIcon";
-import ChatDislikeIcon from "@/public/icons/ChatDislikeIcon";
-import ChatlikeIcon from "@/public/icons/ChatlikeIcon";
-import ChatCopyIcon from "@/public/icons/ChatCopyIcon";
+import RecommendedQuestionsView from "@/components/Chat/RecommendedQuestionsView";
+import FeedBack from "@/components/Chat/FeedBack";
+import ReferencesView from "@/components/Chat/ReferencesView";
 
 import { ChatListItem } from "@/types/Chat";
 
@@ -34,8 +31,13 @@ const ChatDetailPage = ({
   const [chatList, setChatList] = useState<ChatListItem[]>([]);
   const [newQuestion, setNewQuestion] = useState<string>("");
 
-  const { streamStages, streamText, recommendedQuestions, isFinished } =
-    useAiStreaming(chatGroupId, newQuestion);
+  const {
+    streamStages,
+    streamText,
+    recommendedQuestions,
+    references,
+    isFinished,
+  } = useAiStreaming(chatGroupId, newQuestion);
 
   const chatWrapRef = useRef<HTMLDivElement>(null);
 
@@ -69,6 +71,7 @@ const ChatDetailPage = ({
             streamStages: chat.chat_history_list ?? [],
             streamText: chat.chat_answer ?? "",
             recommendedQuestions: chat.recommended_questions ?? [],
+            references: chat.references ?? [],
           };
         });
         setChatList(list);
@@ -121,17 +124,19 @@ const ChatDetailPage = ({
                   {chat.streamText && (
                     <AnswerView streamText={chat.streamText} />
                   )}
-                  <div className="bg-gray-200 p-2">출처</div>
-                  <div className="flex items-center gap-1 mt-2">
-                    <ChatCopyIcon />
-                    <ChatlikeIcon />
-                    <ChatDislikeIcon />
-                    <ChatVoiceIcon />
-                  </div>
+                  {chat.references && chat.references.length > 0 && (
+                    <ReferencesView
+                      references={chat.references}
+                      className="bg-gray-200 p-2  mt-2"
+                      onClick={(item) => console.log(item)}
+                    />
+                  )}
+
+                  <FeedBack streamText={chat.streamText} />
                   {chat.recommendedQuestions &&
                     chat.recommendedQuestions.length > 0 && (
-                      <RecommendedQuestions
-                        className="mt-4"
+                      <RecommendedQuestionsView
+                        className="mt-6"
                         questions={chat.recommendedQuestions}
                         onClick={(question) => handleSearch(question)}
                       />
@@ -157,8 +162,15 @@ const ChatDetailPage = ({
               />
             )}
             {streamText && <AnswerView streamText={streamText} />}
+            {references && references.length > 0 && (
+              <ReferencesView
+                references={references}
+                className="bg-gray-200 p-2 mt-2"
+                onClick={(item) => console.log(item)}
+              />
+            )}
             {recommendedQuestions.length > 0 && (
-              <RecommendedQuestions
+              <RecommendedQuestionsView
                 className="mt-4"
                 questions={recommendedQuestions}
                 onClick={(question) => handleSearch(question)}

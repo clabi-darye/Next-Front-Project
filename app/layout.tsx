@@ -5,6 +5,7 @@ import { MSWComponent } from "./MSWComponent";
 
 import PersistentDrawer from "@/components/Drawer/CustomDrawer";
 import AppInitializer from "@/components/AppInitializer";
+import { GlobalAlert } from "@/components/GlobalAlert";
 
 import "./globals.css";
 
@@ -24,6 +25,7 @@ const RootLayout = ({
           <Providers>
             <AppInitializer />
             <PersistentDrawer></PersistentDrawer>
+            <GlobalAlert />
             <main>{children}</main>
           </Providers>
         </MSWComponent>

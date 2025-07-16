@@ -60,4 +60,12 @@ export interface ChatListItem {
   streamText: string;
   recommendedQuestions?: RecommendedQuestions[];
   references?: Reference[];
+  chatId?: number;
+}
+
+export interface Satisfaction {
+  satisfaction_content: string;
+  satisfaction_type: "LIKE" | "DISLIKE";
+  chat_id: number;
+  satisfaction_id?: number;
 }

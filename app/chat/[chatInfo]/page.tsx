@@ -67,6 +67,7 @@ const ChatDetailPage = ({
         setChatGroupId(data.chat_group_id);
         const list = data.chats.map((chat) => {
           return {
+            chatId: chat.chat_id ?? undefined,
             question: chat.chat_question ?? "",
             streamStages: chat.chat_history_list ?? [],
             streamText: chat.chat_answer ?? "",
@@ -131,8 +132,13 @@ const ChatDetailPage = ({
                       onClick={(item) => console.log(item)}
                     />
                   )}
+                  {chat.chatId && (
+                    <FeedBack
+                      streamText={chat.streamText}
+                      chatId={chat.chatId}
+                    />
+                  )}
 
-                  <FeedBack streamText={chat.streamText} />
                   {chat.recommendedQuestions &&
                     chat.recommendedQuestions.length > 0 && (
                       <RecommendedQuestionsView

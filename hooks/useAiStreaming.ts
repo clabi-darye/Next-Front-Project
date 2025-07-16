@@ -150,22 +150,24 @@ export const useAiStreaming = (
     setRecommendedQuestions(chatData.recommended_questions);
     setReferences(chatData.references);
 
-    saveChat({ chatData });
+    await saveChat({ chatData });
 
-    const shareCodeData = await createShareCode({ groupId: chatGroupId });
+    setTimeout(async () => {
+      const shareCodeData = await createShareCode({ groupId: chatGroupId });
 
-    await saveChatGroup({
-      id: chatGroupId,
-      title: question,
-      shareCode: shareCodeData.encoded_data,
-    });
+      await saveChatGroup({
+        id: chatGroupId,
+        title: question,
+        shareCode: shareCodeData.encoded_data,
+      });
 
-    router.replace(`/chat/${shareCodeData.encoded_data}`);
-    addHistory({
-      id: chatGroupId,
-      title: question,
-      shareCode: shareCodeData.encoded_data,
-    });
+      router.replace(`/chat/${shareCodeData.encoded_data}`);
+      addHistory({
+        id: chatGroupId,
+        title: question,
+        shareCode: shareCodeData.encoded_data,
+      });
+    }, 2000);
   };
 
   const handleError = (error: Error) => {

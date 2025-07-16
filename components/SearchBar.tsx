@@ -9,6 +9,7 @@ import VoiceVisualizer from "./VoiceVisualizer";
 import { InputAdornment, Input } from "@mui/material";
 
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import posthog from "posthog-js";
 
 type SearchBarProps = {
   className?: string;
@@ -27,6 +28,12 @@ const SearchBar = ({
   const handleSubmit = (value: string) => {
     const trimmed = value.trim();
     if (!trimmed) return;
+
+    // PostHog로 검색 이벤트 트래킹
+    posthog.capture("searched_keyword", {
+      keyword: trimmed,
+      source: "search_input",
+    });
 
     onSearch(trimmed);
     setSearchText("");

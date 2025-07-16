@@ -8,6 +8,7 @@ import AppInitializer from "@/components/AppInitializer";
 import { GlobalAlert } from "@/components/GlobalAlert";
 
 import "./globals.css";
+import PostHogProvider from "@/components/PostHogProvider";
 
 export const metadata: Metadata = {
   title: "Chat Bot Template",
@@ -24,9 +25,11 @@ const RootLayout = ({
         <MSWComponent>
           <Providers>
             <AppInitializer />
-            <PersistentDrawer></PersistentDrawer>
-            <GlobalAlert />
-            <main>{children}</main>
+            <PostHogProvider>
+              <PersistentDrawer></PersistentDrawer>
+              <GlobalAlert />
+              <main>{children}</main>
+            </PostHogProvider>
           </Providers>
         </MSWComponent>
       </body>

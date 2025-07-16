@@ -23,6 +23,7 @@ import {
 } from "./styles";
 
 import { Filter } from "@/types/Filter";
+import posthog from "posthog-js";
 
 // Mock data for filters
 const Data = [
@@ -129,6 +130,10 @@ const SearchFilter = ({
     if (selectedFilters.length === filters.length) {
       setSelectedFilters([]);
     } else {
+      posthog.capture("filters", {
+        keyword: filters.map((f) => f.description).join(", "),
+        source: "filters",
+      });
       setSelectedFilters(filters);
     }
   };
@@ -163,6 +168,11 @@ const SearchFilter = ({
     }
 
     newSelected = Array.from(new Set(newSelected));
+
+    posthog.capture("filters", {
+      keyword: newSelected.map((f) => f.description).join(", "),
+      source: "filters",
+    });
 
     setSelectedFilters(newSelected);
   };

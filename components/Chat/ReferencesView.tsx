@@ -24,7 +24,7 @@ const ReferencesView: React.FC<ReferencesViewProps> = ({
           onClick={() => onClick(reference.host[0])}
         >
           <SearchIcon fontSize="small" />
-          <span>출처 :</span>
+          <span>출처 : </span>
           <span>{`[${reference.title}/${reference.title_nm}]`}</span>
         </div>
       ))}

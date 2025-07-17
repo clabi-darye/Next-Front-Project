@@ -9,6 +9,7 @@ import { GlobalAlert } from "@/components/GlobalAlert";
 
 import "./globals.css";
 import PostHogProvider from "@/components/PostHogProvider";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Chat Bot Template",
@@ -25,11 +26,13 @@ const RootLayout = ({
         <MSWComponent>
           <Providers>
             <AppInitializer />
-            <PostHogProvider>
-              <PersistentDrawer></PersistentDrawer>
-              <GlobalAlert />
-              <main>{children}</main>
-            </PostHogProvider>
+            <Suspense fallback={null}>
+              <PostHogProvider>
+                <PersistentDrawer></PersistentDrawer>
+                <GlobalAlert />
+                <main>{children}</main>
+              </PostHogProvider>
+            </Suspense>
           </Providers>
         </MSWComponent>
       </body>

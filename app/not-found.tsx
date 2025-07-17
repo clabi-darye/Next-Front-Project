@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import Link from "next/link";
 
 import { useDrawerStore } from "../store/useDrawerStore";
@@ -7,7 +9,10 @@ import { useDrawerStore } from "../store/useDrawerStore";
 const NotFound = () => {
   const setOpen = useDrawerStore((state) => state.setOpen);
 
-  setOpen(false);
+  useEffect(() => {
+    setOpen(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="h-[100vh] flex flex-1 items-center justify-center flex-col bg-gray-600">

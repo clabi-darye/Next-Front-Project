@@ -22,6 +22,7 @@ const VoiceSearch = ({ onSearch }: VoiceSearchProps) => {
     if (transcript) {
       onSearch(transcript);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transcript]);
 
   if (!browserSupportsSpeechRecognition && listening) {

@@ -10,7 +10,7 @@ const FiltersView = () => {
       spacing={{ xs: 1, sm: 1 }}
       direction="row"
       useFlexGap
-      className="mt-4"
+      className="mt-4 w-full"
       sx={{
         justifyContent: "center",
         alignItems: "center",
@@ -31,10 +31,10 @@ const FiltersView = () => {
               px: 0.75,
               py: 0.5,
               height: "auto",
-              width: "calc(16% - 10px)",
+              width: "calc(16% - 3px)",
               "& .MuiChip-label": {
                 display: "block",
-                whiteSpace: "normal",
+                whiteSpace: "nowrap",
               },
             }}
           />
@@ -43,13 +43,13 @@ const FiltersView = () => {
         <Chip
           label={`외 ${filterTags.length - 17}개`}
           sx={{
-            backgroundColor: "var(--tag-bg)",
+            backgroundColor: "#7EBAEB",
             color: "var(--tag-text)",
             borderRadius: "8px",
             px: 0.75,
             py: 0.5,
             height: "auto",
-            width: "calc(16% - 10px)",
+            width: "calc(16% - 3px)",
             "& .MuiChip-label": {
               display: "block",
               whiteSpace: "normal",

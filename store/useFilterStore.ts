@@ -13,7 +13,6 @@ export const useFilterStore = create<FilterState>((set) => ({
   setSelectedFilters: (filters) => {
     const tags = filters
       .filter((f) => f.depth === 3 && f.division)
-      .sort((a, b) => (a.id ?? 0) - (b.id ?? 0))
       .map((f) => f.division);
 
     set({

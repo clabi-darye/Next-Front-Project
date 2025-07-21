@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { useChatScrollStore } from "@/store/useChatScrollStore";
 
 import {
   Collapse,
@@ -94,7 +95,16 @@ const StreamStagesView = ({
 }: StreamStagesViewProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(defaultOpen);
 
+  const setIsProcessesDropdownOpen = useChatScrollStore(
+    (state) => state.setIsProcessesDropdownOpen
+  );
+
   const activeStep = streamStages.length - 1;
+
+  const handleDropdownOpen = () => {
+    setIsOpen(!isOpen);
+    setIsProcessesDropdownOpen(!isOpen);
+  };
 
   const StepIcon = (props: StepIconProps) => {
     const { active, completed, className } = props;
@@ -117,8 +127,9 @@ const StreamStagesView = ({
           className={`flex items-center justify-between ml-[-3px] cursor-pointer  ${
             isOpen ? "mb-2" : ""
           }`}
+          onClick={() => handleDropdownOpen()}
         >
-          <p className="text-sm" onClick={() => setIsOpen(!isOpen)}>
+          <p className="text-sm">
             💡 {question}에 대해 더 자세한 정보를 찾아보겠습니다.
           </p>
           {isFinished && (

@@ -90,7 +90,7 @@ const UserActionForm = ({
         <p>{desc}</p>
       </DialogTitle>
       <DialogContent>
-        <Stack direction="row" flexWrap="wrap" className="gap-1">
+        <Stack direction="row" flexWrap="wrap" className="gap-2">
           {form.items
             .filter((item) => item.title) // title이 없는 항목은 제외
             .map((item, index) => (
@@ -125,6 +125,9 @@ const UserActionForm = ({
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             size="small"
+            sx={{
+              mt: 2,
+            }}
           />
         )}
       </DialogContent>

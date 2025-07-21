@@ -12,7 +12,7 @@ const PastChatsListview = ({
   onSearch,
 }: {
   chatList: ChatListItem[];
-  onSearch: (question: string) => void;
+  onSearch: (question: string, isRecommend: boolean) => void;
 }) => {
   return (
     <>
@@ -21,7 +21,7 @@ const PastChatsListview = ({
           {chatList.map((chat, index) => {
             return (
               <div
-                className={index !== 0 ? "mt-10" : ""}
+                className={index !== 0 ? "mt-12" : ""}
                 key={`${chat.question}_${index}`}
               >
                 {chat.question && (
@@ -42,7 +42,7 @@ const PastChatsListview = ({
                 {chat.references && chat.references.length > 0 && (
                   <ReferencesView
                     references={chat.references}
-                    className="bg-gray-200 p-2  mt-2"
+                    className="p-2  mt-2"
                     onClick={(item) => console.log(item)}
                   />
                 )}
@@ -55,7 +55,7 @@ const PastChatsListview = ({
                     <RecommendedQuestionsView
                       className="mt-6"
                       questions={chat.recommendedQuestions}
-                      onClick={(question) => onSearch(question)}
+                      onClick={(question) => onSearch(question, true)}
                     />
                   )}
               </div>

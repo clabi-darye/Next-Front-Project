@@ -1,5 +1,7 @@
 "use client";
 
+import clsx from "clsx";
+
 import SearchIcon from "@mui/icons-material/Search";
 
 import { Reference } from "@/types/Chat";
@@ -16,7 +18,7 @@ const ReferencesView: React.FC<ReferencesViewProps> = ({
   onClick,
 }) => {
   return (
-    <div className={className}>
+    <div className={clsx(className, "bg-gray-100")}>
       {references.map((reference, index) => (
         <div
           key={`${reference}_${index}`}

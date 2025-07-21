@@ -4,16 +4,13 @@ import { use, useEffect, useRef, useState } from "react";
 import { useAiStreaming } from "@/hooks/useAiStreaming";
 import { useCreateChatGroup, useFetchSavedChat } from "@/hooks/useChatData";
 import { base64Decode } from "@/utils/encoding";
+import { useAutoScroll } from "@/hooks/useAutoScroll";
 import { useFetchSetting } from "@/hooks/useHomeData";
 
 import SearchBar from "@/components/Common/SearchBar";
-import QuestionView from "@/components/Chat/QuestionView";
-import StreamStagesView from "@/components/Chat/StreamStagesView";
-import AnswerView from "@/components/Chat/AnswerView";
-import RecommendedQuestionsView from "@/components/Chat/RecommendedQuestionsView";
-import ReferencesView from "@/components/Chat/ReferencesView";
 import UserActionForm from "@/components/Chat/UserActionForm";
 import PastChatsListview from "@/components/Chat/PastChatsListview";
+import CurrentChatView from "@/components/Chat/CurrentChatView";
 
 import { ChatListItem } from "@/types/Chat";
 
@@ -42,53 +39,59 @@ const ChatDetailPage = ({
     abortStreaming,
   } = useAiStreaming(chatGroupId, newQuestion, isRecommend);
 
-  const chatWrapRef = useRef<HTMLDivElement>(null);
-
-  // 언마운트 시 스트리밍 중단
   useEffect(() => {
     return () => {
       abortStreaming?.();
     };
   }, []);
 
+  const {
+    containerRef: chatWrapRef,
+    isUserScrolling,
+    scrollToBottom,
+  } = useAutoScroll<HTMLDivElement>();
+
+  // 콘텐츠 변화 시 자동 스크롤
+  useEffect(() => {
+    if (!isUserScrolling) {
+      scrollToBottom();
+    }
+  }, [pastChats, streamStages, newQuestion, streamText]);
+
   // 초기 마운트 시 처리
   useEffect(() => {
     if (!chatInfo) return;
 
-    try {
-      // 새로운 검색으로 접근 시
-      const decoded = base64Decode(chatInfo);
-      const parsed = JSON.parse(decoded);
-      const { title } = parsed;
-      handleCreate(title);
-    } catch {
-      // Chat History에서 접근 시
-      fetchSavedChat({ encodedData: chatInfo }).then((data) => {
-        setChatGroupId(data.chat_group_id);
-        const list = data.chats.map((chat) => {
-          return {
-            chatId: chat.chat_id ?? undefined,
-            question: chat.chat_question ?? "",
-            streamStages: chat.chat_history_list ?? [],
-            streamText: chat.chat_answer ?? "",
-            recommendedQuestions: chat.recommended_questions ?? [],
-            references: chat.references ?? [],
-          };
+    const init = async () => {
+      try {
+        // 새로운 검색으로 접근 시
+        const decoded = base64Decode(chatInfo);
+        const parsed = JSON.parse(decoded);
+        const { title } = parsed;
+        handleCreateNewChat(title);
+      } catch {
+        // Chat History에서 접근 시
+        fetchSavedChat({ encodedData: chatInfo }).then((data) => {
+          setChatGroupId(data.chat_group_id);
+          const list = data.chats.map((chat) => {
+            return {
+              chatId: chat.chat_id ?? undefined,
+              question: chat.chat_question ?? "",
+              streamStages: chat.chat_history_list ?? [],
+              streamText: chat.chat_answer ?? "",
+              recommendedQuestions: chat.recommended_questions ?? [],
+              references: chat.references ?? [],
+            };
+          });
+          setPastChats(list);
         });
-        setPastChats(list);
-      });
-    }
+      }
+    };
+    init();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatInfo]);
 
-  // 채팅이 추가되거나 질문이 생기면 자동 스크롤
-  useEffect(() => {
-    if (chatWrapRef.current) {
-      chatWrapRef.current.scrollTop = chatWrapRef.current.scrollHeight;
-    }
-  }, [pastChats, newQuestion, streamText]);
-
-  const handleCreate = async (title: string) => {
+  const handleCreateNewChat = async (title: string) => {
     try {
       const chatGroup = await createChatGroup({ title });
       setChatGroupId(chatGroup.chat_group_id);
@@ -98,10 +101,10 @@ const ChatDetailPage = ({
     }
   };
 
-  const handleSearch = (text: string) => {
+  const handleSearch = (text: string, isRecommend = false) => {
     if (!text) return;
 
-    setIsRecommend(true);
+    setIsRecommend(isRecommend);
     setNewQuestion(text);
   };
 
@@ -122,36 +125,17 @@ const ChatDetailPage = ({
 
         {/* 새 질문 응답 영역 */}
         {newQuestion && (
-          <div className={pastChats.length === 0 ? "" : "mt-10"}>
-            {newQuestion && (
-              <div className="flex items-center justify-end">
-                <QuestionView type="contained" question={newQuestion} />
-              </div>
-            )}
-            {streamStages && (
-              <StreamStagesView
-                className="my-4 border border-gray-300 py-2 px-4 rounded"
-                question={newQuestion}
-                streamStages={streamStages}
-                isFinished={isFinished}
-              />
-            )}
-            {streamText && <AnswerView streamText={streamText} />}
-            {references && references.length > 0 && (
-              <ReferencesView
-                references={references}
-                className="bg-gray-200 p-2 mt-2"
-                onClick={(item) => console.log(item)}
-              />
-            )}
-            {recommendedQuestions.length > 0 && (
-              <RecommendedQuestionsView
-                className="mt-4"
-                questions={recommendedQuestions}
-                onClick={(question) => handleSearch(question)}
-              />
-            )}
-          </div>
+          <CurrentChatView
+            className={pastChats.length === 0 ? "" : "mt-10"}
+            question={newQuestion}
+            streamStages={streamStages}
+            streamText={streamText}
+            isFinished={isFinished}
+            references={references}
+            recommendedQuestions={recommendedQuestions}
+            onSearch={handleSearch}
+            hasPastChats={pastChats.length > 0}
+          />
         )}
       </div>
 

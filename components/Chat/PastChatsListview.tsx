@@ -29,7 +29,7 @@ const PastChatsListview = ({ chatList, onSearch }: PastChatsListviewProps) => {
                     <QuestionView type="contained" question={chat.question} />
                   </div>
                 )}
-                {chat.selectedItems && (
+                {chat.selectedItems && chat.selectedItems.length > 0 && (
                   <SelectedItemsView
                     className="my-3"
                     selectItems={chat.selectedItems}

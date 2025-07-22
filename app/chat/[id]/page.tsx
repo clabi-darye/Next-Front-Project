@@ -134,7 +134,7 @@ const ChatDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
       streamText,
       recommendedQuestions,
       references,
-      selectedItems: selectedItems.split(", "),
+      selectedItems: selectedItems ? selectedItems.split(", ") : [],
     };
     setPastChats((prevChats) => [...prevChats, newChat]);
 

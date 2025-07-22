@@ -88,7 +88,7 @@ export const getSatisfactionId = async (
 ): Promise<number | undefined> => {
   const store = await getStore(SATISFACTION_STORE, "readonly");
   const item = await wrapRequest(store.get(chatId));
-  return item.satisfactionId ?? null;
+  return (item && item.satisfactionId) ?? undefined;
 };
 
 export const saveSatisfactionId = async (

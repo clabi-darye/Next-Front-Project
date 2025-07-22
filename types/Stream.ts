@@ -1,4 +1,5 @@
 import { Reference } from "./Chat";
+import { Filter } from "./Filter";
 
 export interface StreamStage {
   type: string;
@@ -30,9 +31,13 @@ export interface StreamEndEvent {
     category: UserActionFormData;
   };
   transfer_data?: unknown[];
-  re_select_data?: unknown;
-  re_answer_data?: unknown;
-  select_items?: unknown[];
+  re_select_data?: {
+    publication_year: string;
+    title: string;
+    title_kr: string;
+  }[];
+  re_answer_data?: string;
+  select_items?: Filter[];
   [key: string]: unknown;
 }
 

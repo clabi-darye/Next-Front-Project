@@ -4,6 +4,7 @@ import QuestionView from "./QuestionView";
 import RecommendedQuestionsView from "./RecommendedQuestionsView";
 import ReferencesView from "./ReferencesView";
 import StreamStagesView from "./StreamStagesView/StreamStagesView";
+import SelectedItemsView from "./SelectedItemsView";
 
 import { ChatListItem } from "@/types/Chat";
 
@@ -27,6 +28,12 @@ const PastChatsListview = ({ chatList, onSearch }: PastChatsListviewProps) => {
                   <div className="flex items-center justify-end">
                     <QuestionView type="contained" question={chat.question} />
                   </div>
+                )}
+                {chat.selectedItems && (
+                  <SelectedItemsView
+                    className="my-3"
+                    selectItems={chat.selectedItems}
+                  />
                 )}
                 {chat.streamStages && (
                   <StreamStagesView

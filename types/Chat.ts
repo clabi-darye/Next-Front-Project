@@ -56,6 +56,7 @@ export interface RecommendedQuestions {
 export interface Chat {
   chat_question: string;
   chat_answer: string;
+  select_items?: string;
   chat_group_id?: number;
   chat_id?: number;
   chat_ai_group_id?: number;
@@ -87,6 +88,7 @@ export interface ChatListItem {
   recommendedQuestions?: RecommendedQuestions[];
   references?: Reference[];
   chatId?: number;
+  selectedItems?: string[];
 }
 
 export interface Satisfaction {

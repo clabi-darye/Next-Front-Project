@@ -51,7 +51,6 @@ const SearchBar = ({
   const [searchText, setSearchText] = useState("");
 
   const handleSubmit = (value: string) => {
-    console.log(value);
     if (!value) return;
 
     // PostHog로 검색 이벤트 트래킹

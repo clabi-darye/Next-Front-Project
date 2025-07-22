@@ -77,11 +77,15 @@ const UserActionForm = ({
 
   const handleSubmit = () => {
     resolve?.({ re_select_data: selectedItems, re_answer_data: searchText });
+    setSelectedItems([]);
+    setSearchText("");
     close();
   };
 
   const handleClose = () => {
     resolve?.({ re_select_data: [], re_answer_data: "" });
+    setSelectedItems([]);
+    setSearchText("");
     close();
   };
 

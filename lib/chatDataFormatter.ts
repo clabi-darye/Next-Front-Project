@@ -19,6 +19,8 @@ export const formatChatSaveData = (
     recommended_questions = "[]",
     references = [],
     images = [],
+    re_select_data = [],
+    re_answer_data = "",
   } = event;
 
   return {
@@ -30,7 +32,11 @@ export const formatChatSaveData = (
     clario_uuid,
     action: isRecommend ? "recommend" : action,
     sub_action,
-    select_items: select_items.join(", "),
+    select_items: [
+      ...select_items.map((item) => item.description),
+      ...re_select_data.map((item) => item.title),
+      re_answer_data,
+    ].join(", "),
     recommended_questions: (typeof recommended_questions === "string"
       ? JSON.parse(recommended_questions)
       : recommended_questions

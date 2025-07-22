@@ -20,12 +20,8 @@ import { createShareCode } from "@/services/chatService";
 
 import { ChatGroupResponse, ChatListItem } from "@/types/Chat";
 
-const ChatDetailPage = ({
-  params,
-}: {
-  params: Promise<{ chatInfo: string }>;
-}) => {
-  const { chatInfo } = use(params);
+const ChatDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = use(params);
   const router = useRouter();
 
   const queryClient = useQueryClient();
@@ -44,6 +40,7 @@ const ChatDetailPage = ({
     streamText,
     recommendedQuestions,
     references,
+    selectedItems,
     isStreaming,
     isFinished,
     abortStreaming,
@@ -58,43 +55,43 @@ const ChatDetailPage = ({
 
   // 초기 마운트 시 처리
   useEffect(() => {
-    if (!chatInfo) return;
+    if (!id) return;
 
     const init = async () => {
       const groupId = Number(parsed);
-
-      // groupId 유효성 검사
       if (isNaN(groupId)) {
         router.push("/not-found");
         return;
       }
 
       try {
-        // 채팅 그룹 ID 상태로 설정
         setChatGroupId(groupId);
 
-        // 공유 코드 생성 및 저장된 채팅 데이터 조회
-        const shareCodeData = await createShareCode(groupId);
+        const [shareCodeData, cachedData] = await Promise.all([
+          createShareCode(groupId),
+          Promise.resolve(
+            queryClient.getQueryData<ChatGroupResponse>(["chatGroup", groupId])
+          ),
+        ]);
+
         const { chats } = await fetchSavedChat({
           encodedData: shareCodeData.encoded_data,
         });
 
-        // 과거 채팅 리스트 변환 후 상태에 저장
-        const formattedChats = chats.map((chat) => ({
-          chatId: chat.chat_id ?? undefined,
-          question: chat.chat_question ?? "",
-          streamStages: chat.chat_history_list ?? [],
-          streamText: chat.chat_answer ?? "",
-          recommendedQuestions: chat.recommended_questions ?? [],
-          references: chat.references ?? [],
-        }));
-        setPastChats(formattedChats);
+        setPastChats(
+          chats.map((chat) => ({
+            chatId: chat.chat_id ?? undefined,
+            question: chat.chat_question ?? "",
+            streamStages: chat.chat_history_list ?? [],
+            streamText: chat.chat_answer ?? "",
+            recommendedQuestions: chat.recommended_questions ?? [],
+            references: chat.references ?? [],
+            selectedItems: chat.select_items
+              ? chat.select_items.split(", ")
+              : [],
+          }))
+        );
 
-        // 쿼리 캐시에서 기존 채팅 그룹 데이터 확인 → 질문 설정
-        const cachedData = queryClient.getQueryData<ChatGroupResponse>([
-          "chatGroup",
-          groupId,
-        ]);
         if (cachedData) {
           setNewQuestion(cachedData.title);
         }
@@ -137,6 +134,7 @@ const ChatDetailPage = ({
       streamText,
       recommendedQuestions,
       references,
+      selectedItems: selectedItems.split(", "),
     };
     setPastChats((prevChats) => [...prevChats, newChat]);
 
@@ -155,7 +153,7 @@ const ChatDetailPage = ({
   };
 
   // chatInfo를 디코딩하고 파싱하여 유효한 값인지 확인
-  const parsed = decodeAndParse(chatInfo);
+  const parsed = decodeAndParse(id);
   // 파싱 결과가 유효하지 않으면 not-found 페이지로 리다이렉트
   if (!parsed) {
     router.push(`/not-found`);

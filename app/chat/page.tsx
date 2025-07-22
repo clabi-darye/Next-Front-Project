@@ -4,28 +4,28 @@ import { useRouter } from "next/navigation";
 
 import { base64Encode } from "@/utils/encoding";
 import { useFetchSetting } from "@/hooks/useHomeData";
-import { createChatGroup } from "@/services/chatService";
+import { useCreateChatGroup } from "@/hooks/useChatData";
 
 import Greeting from "@/components/Common/Greeting";
 import SearchBar from "@/components/Common/SearchBar";
-import Image from "next/image";
-import { homeConfig } from "@/config/home.config";
 import FiltersView from "@/components/Common/FiltersView";
+import Image from "next/image";
+
+import { homeConfig } from "@/config/home.config";
 
 const ChatPage = () => {
   const router = useRouter();
 
   const { data: settingData } = useFetchSetting();
+  const { mutateAsync: createGroup } = useCreateChatGroup();
 
   const handleSearch = async (searchText: string) => {
     try {
-      const chatGroup = await createChatGroup(searchText);
+      const chatGroup = await createGroup({ title: searchText });
 
-      const obj = {
-        title: searchText,
-        chatGroupId: chatGroup.chat_group_id,
-      };
-      router.push(`/chat/${base64Encode(JSON.stringify(obj))}`);
+      router.push(
+        `/chat/${base64Encode(JSON.stringify(chatGroup.chat_group_id))}`
+      );
     } catch (error) {}
   };
 

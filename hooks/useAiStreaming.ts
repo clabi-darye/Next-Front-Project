@@ -39,6 +39,7 @@ export const useAiStreaming = (
   const [recommendedQuestions, setRecommendedQuestions] = useState<
     RecommendedQuestions[]
   >([]);
+  const [selectedItems, setSelectedItems] = useState<string>("");
   const [references, setReferences] = useState<Reference[]>([]);
   const [isFinished, setIsFinished] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -133,10 +134,8 @@ export const useAiStreaming = (
         return startStreaming(
           event.next_endpoint,
           {
-            ...userActionData, // 유저가 선택한 값 전달
+            ...userActionData,
             transfer_data: event.transfer_data,
-            re_select_data: event.re_select_data,
-            reAnswerData: event.re_answer_data,
           },
           newController.signal
         );
@@ -158,8 +157,6 @@ export const useAiStreaming = (
         event.next_endpoint,
         {
           transfer_data: event.transfer_data,
-          re_select_data: event.re_select_data,
-          reAnswerData: event.re_answer_data,
         },
         newController.signal
       );
@@ -182,7 +179,6 @@ export const useAiStreaming = (
   ) => {
     if (event.type === "all" && !event.chat_question) {
       appendText("현재 서비스가 원할하지 못합니다. 서비스팀에 문의해주세요.");
-
       return;
     }
 
@@ -195,6 +191,8 @@ export const useAiStreaming = (
 
     setRecommendedQuestions(chatData.recommended_questions);
     setReferences(chatData.references);
+    setSelectedItems(chatData.select_items);
+
     const data: ChatResponse = await saveChat(chatData);
     setChatId(data.chat_id);
 
@@ -243,6 +241,7 @@ export const useAiStreaming = (
     streamStages,
     recommendedQuestions,
     references,
+    selectedItems,
     isFinished,
     isStreaming,
     hasError,

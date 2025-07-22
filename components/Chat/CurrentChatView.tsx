@@ -6,12 +6,12 @@ import AnswerView from "@/components/Chat/AnswerView";
 import ReferencesView from "@/components/Chat/ReferencesView";
 import RecommendedQuestionsView from "@/components/Chat/RecommendedQuestionsView";
 import { RecommendedQuestions, Reference } from "@/types/Chat"; // 필요한 타입들 import
-import { StreamEvent } from "@/types/Stream";
+import { StreamStage } from "@/types/Stream";
 
 interface CurrentChatViewProps {
   className?: string;
   question: string;
-  streamStages: StreamEvent[];
+  streamStages: StreamStage[];
   streamText: string;
   isFinished: boolean;
   references: Reference[];

@@ -14,14 +14,14 @@ import {
 import { Check } from "@mui/icons-material";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 
-import { StreamEvent } from "@/types/Stream";
+import { StreamStage } from "@/types/Stream";
 
 import "./StreamStagesView.css";
 import { useState } from "react";
 
 type StreamStagesViewProps = {
   question: string;
-  streamStages: StreamEvent[];
+  streamStages: StreamStage[];
   isFinished?: boolean;
   className?: string;
   defaultOpen?: boolean;

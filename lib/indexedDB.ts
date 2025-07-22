@@ -1,4 +1,4 @@
-const DB_NAME = process.env.NEXT_PUBLIC_DATABASE_NAME || "Clabi";
+const DB_NAME = process.env.NEXT_PUBLIC_DATABASE_NAME || "Kea";
 const DB_VERSION = 1;
 const CHAT_HISTORY_STORE = "ChatHistoryStore";
 const SAVED_CHAT_STORE = "SavedChatStore";
@@ -88,7 +88,7 @@ export const getSatisfactionId = async (
 ): Promise<number | undefined> => {
   const store = await getStore(SATISFACTION_STORE, "readonly");
   const item = await wrapRequest(store.get(chatId));
-  return item.satisfactionId ?? null;
+  return (item && item.satisfactionId) ?? undefined;
 };
 
 export const saveSatisfactionId = async (

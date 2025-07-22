@@ -167,12 +167,14 @@ const SearchFilter = () => {
         onKeyDown={(e) => {
           if (e.key === "Enter") handleSearchFilter();
         }}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <SearchIcon />
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          },
         }}
       />
 

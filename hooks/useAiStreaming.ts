@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-import { useSaveChat } from "@/hooks/useChatData";
 import { useChatHistoryStore } from "@/store/useChatHistoryStore";
 import { formatChatSaveData } from "@/lib/chatDataFormatter";
 import { saveChatGroup } from "@/lib/indexedDB";
@@ -15,7 +14,13 @@ import {
   UserActionData,
   UserActionFormData,
 } from "@/types/Stream";
-import { RecommendedQuestions, Reference } from "@/types/Chat";
+import {
+  Chat,
+  ChatResponse,
+  RecommendedQuestions,
+  Reference,
+} from "@/types/Chat";
+import { saveChat } from "@/services/chatService";
 
 export const useAiStreaming = (
   chatGroupId: number | undefined,
@@ -27,8 +32,8 @@ export const useAiStreaming = (
 
   const addHistory = useChatHistoryStore((state) => state.addHistory);
   const selectedFilters = useFilterStore((state) => state.selectedFilters);
-  const { mutate: saveChat } = useSaveChat();
 
+  const [chatId, setChatId] = useState<number | undefined>();
   const [streamText, setStreamText] = useState("");
   const [streamStages, setStreamStages] = useState<StreamStage[]>([]);
   const [recommendedQuestions, setRecommendedQuestions] = useState<
@@ -161,7 +166,6 @@ export const useAiStreaming = (
     }
 
     saveChatHistory(event, chatGroupId);
-    completeStream();
   };
 
   const waitForUserAction = (
@@ -177,10 +181,7 @@ export const useAiStreaming = (
     chatGroupId: number
   ) => {
     if (event.type === "all" && !event.chat_question) {
-      appendText(
-        event.chat_question ||
-          "현재 서비스가 원할하지 못합니다. 서비스팀에 문의해주세요."
-      );
+      appendText("현재 서비스가 원할하지 못합니다. 서비스팀에 문의해주세요.");
 
       return;
     }
@@ -194,20 +195,20 @@ export const useAiStreaming = (
 
     setRecommendedQuestions(chatData.recommended_questions);
     setReferences(chatData.references);
+    const data: ChatResponse = await saveChat(chatData);
+    setChatId(data.chat_id);
 
-    await saveChat({ chatData });
+    await saveChatGroup({
+      id: chatGroupId,
+      title: question,
+    });
 
-    setTimeout(async () => {
-      await saveChatGroup({
-        id: chatGroupId,
-        title: question,
-      });
+    await addHistory({
+      id: chatGroupId,
+      title: question,
+    });
 
-      addHistory({
-        id: chatGroupId,
-        title: question,
-      });
-    }, 2000);
+    await completeStream();
   };
 
   const handleError = (error: Error) => {
@@ -237,6 +238,7 @@ export const useAiStreaming = (
   };
 
   return {
+    chatId,
     streamText,
     streamStages,
     recommendedQuestions,

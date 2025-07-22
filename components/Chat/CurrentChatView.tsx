@@ -1,11 +1,12 @@
 "use client";
 
 import QuestionView from "@/components/Chat/QuestionView";
-import StreamStagesView from "@/components/Chat/StreamStagesView";
+import StreamStagesView from "@/components/Chat/StreamStagesView/StreamStagesView";
 import AnswerView from "@/components/Chat/AnswerView";
 import ReferencesView from "@/components/Chat/ReferencesView";
 import RecommendedQuestionsView from "@/components/Chat/RecommendedQuestionsView";
-import { RecommendedQuestions, Reference } from "@/types/Chat"; // 필요한 타입들 import
+
+import { RecommendedQuestions, Reference } from "@/types/Chat";
 import { StreamStage } from "@/types/Stream";
 
 interface CurrentChatViewProps {
@@ -17,7 +18,6 @@ interface CurrentChatViewProps {
   references: Reference[];
   recommendedQuestions: RecommendedQuestions[];
   onSearch: (text: string, isRecommend: boolean) => void;
-  hasPastChats?: boolean;
 }
 
 const CurrentChatView = ({
@@ -29,7 +29,6 @@ const CurrentChatView = ({
   references,
   recommendedQuestions,
   onSearch,
-  hasPastChats = false,
 }: CurrentChatViewProps) => {
   return (
     <div className={className}>

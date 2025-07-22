@@ -8,9 +8,36 @@ export interface ChatGroupResponse {
   updated_at: string;
 }
 
+export interface ChatResponse {
+  chat_question: string;
+  chat_answer: string;
+  chat_group_id: number;
+  chat_id: number;
+  created_at?: string;
+  updated_at?: string;
+  ip_address?: string;
+  use_token_count?: number;
+  latency?: number;
+  action?: string;
+  sub_action?: string;
+  recommended_questions?: RecommendedQuestions[];
+  references?: Reference[];
+  images?:
+    | {
+        imageUrl: string;
+        imageType: string;
+      }[]
+    | null;
+  chat_history_list?: {
+    type: string;
+    text: string;
+  }[];
+}
+
 export interface Reference {
-  type: string;
   id: string;
+  type: string;
+  index_code: string;
   title: string;
   title_nm: string;
   text: string;

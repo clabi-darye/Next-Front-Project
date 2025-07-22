@@ -3,17 +3,16 @@ import FeedBack from "./FeedBack";
 import QuestionView from "./QuestionView";
 import RecommendedQuestionsView from "./RecommendedQuestionsView";
 import ReferencesView from "./ReferencesView";
-import StreamStagesView from "./StreamStagesView";
+import StreamStagesView from "./StreamStagesView/StreamStagesView";
 
 import { ChatListItem } from "@/types/Chat";
 
-const PastChatsListview = ({
-  chatList,
-  onSearch,
-}: {
+interface PastChatsListviewProps {
   chatList: ChatListItem[];
   onSearch: (question: string, isRecommend: boolean) => void;
-}) => {
+}
+
+const PastChatsListview = ({ chatList, onSearch }: PastChatsListviewProps) => {
   return (
     <>
       {chatList && (

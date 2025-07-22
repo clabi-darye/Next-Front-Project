@@ -39,10 +39,12 @@ const ChatDetailPage = ({
   const [isRecommend, setIsRecommend] = useState<boolean>(false);
 
   const {
+    chatId,
     streamStages,
     streamText,
     recommendedQuestions,
     references,
+    isStreaming,
     isFinished,
     abortStreaming,
     resetStreaming,
@@ -129,6 +131,7 @@ const ChatDetailPage = ({
 
     // 기존 채팅 목록에 추가
     const newChat: ChatListItem = {
+      chatId: chatId,
       question: newQuestion,
       streamStages,
       streamText,
@@ -140,7 +143,7 @@ const ChatDetailPage = ({
     // 스트리밍 상태 초기화
     resetStreaming();
     setNewQuestion("");
-  }, [isFinished, chatGroupId]);
+  }, [isFinished]);
 
   const decodeAndParse = (data: string) => {
     try {
@@ -160,7 +163,7 @@ const ChatDetailPage = ({
   }
 
   const handleSearch = (text: string, isRecommend = false) => {
-    if (!text) return;
+    if (!text || isStreaming) return;
 
     setIsRecommend(isRecommend);
     setNewQuestion(text);
@@ -197,7 +200,6 @@ const ChatDetailPage = ({
             references={references}
             recommendedQuestions={recommendedQuestions}
             onSearch={handleSearch}
-            hasPastChats={pastChats.length > 0}
           />
         )}
       </div>

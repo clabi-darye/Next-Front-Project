@@ -35,17 +35,19 @@ const CustomField = styled(TextField)({
   },
 });
 
+interface UserActionFormProps {
+  title?: string;
+  desc?: string;
+  isInput?: boolean;
+  inputPlaceholder?: string;
+}
+
 const UserActionForm = ({
   title = "정확한 검색을 위해 추가 정보가 필요합니다.",
   desc = "참고할 문서를 직접 프롬프트창에서 입력하거나, 아래 후보 중에서 선택해 주세요!",
   isInput = true,
   inputPlaceholder = "참고할 문서를 입력해 주세요",
-}: {
-  title?: string;
-  desc?: string;
-  isInput?: boolean;
-  inputPlaceholder?: string;
-}) => {
+}: UserActionFormProps) => {
   const { form, resolve, close } = useUserActionStore();
 
   const [selectedItems, setSelectedItems] = useState<UserActionFormItem[]>([]);
@@ -138,7 +140,7 @@ const UserActionForm = ({
         <Button
           variant="contained"
           onClick={handleSubmit}
-          disabled={selectedItems.length === 0}
+          disabled={selectedItems.length === 0 && !searchText}
           className="w-1/2"
         >
           확인

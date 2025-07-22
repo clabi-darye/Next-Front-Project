@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import clsx from "clsx";
 import { useChatScrollStore } from "@/store/useChatScrollStore";
 
@@ -17,15 +19,14 @@ import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import { StreamStage } from "@/types/Stream";
 
 import "./StreamStagesView.css";
-import { useState } from "react";
 
-type StreamStagesViewProps = {
+interface StreamStagesViewProps {
   question: string;
   streamStages: StreamStage[];
   isFinished?: boolean;
   className?: string;
   defaultOpen?: boolean;
-};
+}
 
 const Connector = styled(StepConnector)(() => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {

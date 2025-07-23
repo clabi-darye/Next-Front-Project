@@ -48,7 +48,7 @@ const SearchBar = ({
   onSearch,
 }: SearchBarProps) => {
   const { listening } = useSpeechRecognition();
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState<string>("");
 
   const handleSubmit = (value: string) => {
     if (!value) return;
@@ -75,6 +75,7 @@ const SearchBar = ({
           onChange={(e) => setSearchText(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
               handleSubmit(searchText);
             }
           }}

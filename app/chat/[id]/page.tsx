@@ -87,7 +87,10 @@ const ChatDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
             recommendedQuestions: chat.recommended_questions ?? [],
             references: chat.references ?? [],
             selectedItems: chat.select_items
-              ? chat.select_items.split(", ")
+              ? chat.select_items
+                  .split(",")
+                  .map((s) => s.trim())
+                  .filter(Boolean)
               : [],
           }))
         );
@@ -134,7 +137,12 @@ const ChatDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
       streamText,
       recommendedQuestions,
       references,
-      selectedItems: selectedItems ? selectedItems.split(", ") : [],
+      selectedItems: selectedItems
+        ? selectedItems
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean)
+        : [],
     };
     setPastChats((prevChats) => [...prevChats, newChat]);
 

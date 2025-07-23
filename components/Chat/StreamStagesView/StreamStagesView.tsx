@@ -112,10 +112,10 @@ const StreamStagesView = ({
 
     return (
       <StepIconRoot ownerState={{ active }} className={className}>
-        {completed ? (
+        {completed || isFinished ? (
           <Check className="completedIcon" />
         ) : (
-          <div className="circleIcon" />
+          <div className={`circleIcon ${active ? "animate-pulse" : ""}`} />
         )}
       </StepIconRoot>
     );

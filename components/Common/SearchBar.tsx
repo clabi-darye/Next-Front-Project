@@ -10,6 +10,7 @@ import VoiceSearch from "./VoiceSearch";
 import VoiceVisualizer from "./VoiceVisualizer";
 import { InputAdornment, TextField, styled } from "@mui/material";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import RoundedTextField from "./RoundedTextField";
 
 interface SearchBarProps {
   className?: string;
@@ -17,27 +18,22 @@ interface SearchBarProps {
   onSearch: (searchText: string) => void;
 }
 
-const CustomField = styled(TextField)({
+const CustomField = styled(RoundedTextField)({
   "& label.Mui-focused": {
     color: "var(--point)",
-    borderRadius: "32px",
   },
   "& .MuiInput-underline:after": {
     borderBottomColor: "var(--point)",
-    borderRadius: "32px",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
       borderColor: "var(--point)",
-      borderRadius: "32px",
     },
     "&:hover fieldset": {
       borderColor: "var(--point)",
-      borderRadius: "32px",
     },
     "&.Mui-focused fieldset": {
       borderColor: "var(--point)",
-      borderRadius: "32px",
     },
   },
 });

@@ -7,7 +7,7 @@ import type { RecommendedQuestions } from "@/types/Chat";
 interface RecommendedQuestionsViewProps {
   questions: RecommendedQuestions[];
   className: string;
-  onClick: (item: string) => void;
+  onClick?: (item: string) => void;
 }
 
 const RecommendedQuestionsView = ({
@@ -31,7 +31,7 @@ const RecommendedQuestionsView = ({
         <div
           key={`${question}_${index}`}
           className="border-b border-solid border-gray-300 py-[3px] cursor-pointer"
-          onClick={() => onClick(question.question)}
+          onClick={() => onClick?.(question.question)}
         >
           {question.question}
         </div>

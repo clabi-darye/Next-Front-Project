@@ -19,9 +19,14 @@ import CurrentChatView from "@/components/Chat/CurrentChatView";
 import { createShareCode } from "@/services/chatService";
 
 import { ChatGroupResponse, ChatListItem } from "@/types/Chat";
+import ChatNavigation from "@/components/Chat/ChatNavigation";
 
-const ChatDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id } = use(params);
+const ChatDetailPage = ({
+  params,
+}: {
+  params: Promise<{ chatGroupId: string }>;
+}) => {
+  const { chatGroupId } = use(params);
   const router = useRouter();
 
   const queryClient = useQueryClient();
@@ -29,7 +34,7 @@ const ChatDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { mutateAsync: fetchSavedChat } = useFetchSavedChat();
   const openAlert = useAlertStore((state) => state.openAlert);
 
-  const [chatGroupId, setChatGroupId] = useState<number>();
+  const [groupId, setGroupId] = useState<number>();
   const [pastChats, setPastChats] = useState<ChatListItem[]>([]);
   const [newQuestion, setNewQuestion] = useState<string>("");
   const [isRecommend, setIsRecommend] = useState<boolean>(false);
@@ -45,7 +50,7 @@ const ChatDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
     isFinished,
     abortStreaming,
     resetStreaming,
-  } = useAiStreaming(chatGroupId, newQuestion, isRecommend);
+  } = useAiStreaming(groupId, newQuestion, isRecommend);
 
   const {
     containerRef: chatWrapRef,
@@ -55,7 +60,7 @@ const ChatDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
   // 초기 마운트 시 처리
   useEffect(() => {
-    if (!id) return;
+    if (!chatGroupId) return;
 
     const init = async () => {
       const groupId = Number(parsed);
@@ -65,7 +70,7 @@ const ChatDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
       }
 
       try {
-        setChatGroupId(groupId);
+        setGroupId(groupId);
 
         const [shareCodeData, cachedData] = await Promise.all([
           createShareCode(groupId),
@@ -95,7 +100,7 @@ const ChatDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
           }))
         );
 
-        if (cachedData) {
+        if (chats.length === 0 && cachedData) {
           setNewQuestion(cachedData.title);
         }
       } catch (error) {
@@ -151,17 +156,8 @@ const ChatDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
     setNewQuestion("");
   }, [isFinished]);
 
-  const decodeAndParse = (data: string) => {
-    try {
-      const decoded = base64Decode(data);
-      return JSON.parse(decoded);
-    } catch {
-      return null;
-    }
-  };
-
   // chatInfo를 디코딩하고 파싱하여 유효한 값인지 확인
-  const parsed = decodeAndParse(id);
+  const parsed = base64Decode(chatGroupId);
   // 파싱 결과가 유효하지 않으면 not-found 페이지로 리다이렉트
   if (!parsed) {
     router.push(`/not-found`);
@@ -184,6 +180,8 @@ const ChatDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
       )}
       {/* 스트리밍 중 사용자 액션 영역 */}
       <UserActionForm></UserActionForm>
+
+      {pastChats.length > 0 && <ChatNavigation />}
 
       <div
         id="chatwrap"

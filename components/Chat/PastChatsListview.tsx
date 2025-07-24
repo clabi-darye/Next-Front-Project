@@ -10,7 +10,7 @@ import { ChatListItem } from "@/types/Chat";
 
 interface PastChatsListviewProps {
   chatList: ChatListItem[];
-  onSearch: (question: string, isRecommend: boolean) => void;
+  onSearch?: (question: string, isRecommend: boolean) => void;
 }
 
 const PastChatsListview = ({ chatList, onSearch }: PastChatsListviewProps) => {
@@ -61,7 +61,7 @@ const PastChatsListview = ({ chatList, onSearch }: PastChatsListviewProps) => {
                     <RecommendedQuestionsView
                       className="mt-6"
                       questions={chat.recommendedQuestions}
-                      onClick={(question) => onSearch(question, true)}
+                      onClick={(question) => onSearch?.(question, true)}
                     />
                   )}
               </div>

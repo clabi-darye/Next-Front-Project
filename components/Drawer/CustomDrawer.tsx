@@ -19,7 +19,8 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import DrawerMenuItem from "./DrawerMenu/DrawerMenuItem";
+import DrawerButtonItem from "./DrawerMenu/DrawerButtonItem";
+import DrawerStandardItem from "./DrawerMenu/DrawerStandardItem";
 import { DrawerItem } from "../../types/Drawer";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -149,16 +150,30 @@ const CustomDrawer = () => {
           className="bg-drawer-bg text-drawer-text h-[100vh] overflow-auto"
           key="drawerItems"
         >
-          {filteredMenuList.map((menu) =>
-            menu.key === "history" && histories.length === 0 ? null : (
-              <DrawerMenuItem
+          {filteredMenuList.map((menu) => {
+            const isHistoryEmpty =
+              menu.key === "history" && histories.length === 0;
+            if (isHistoryEmpty) return null;
+
+            if (menu.key === "button") {
+              return (
+                <DrawerButtonItem
+                  key={menu.key}
+                  item={menu}
+                  onClick={handleListItemClick}
+                />
+              );
+            }
+
+            return (
+              <DrawerStandardItem
                 key={menu.key}
                 item={menu}
-                isOpen={toggleStates[menu.key] ?? false}
+                isOpen={isOpen}
                 onClick={handleListItemClick}
               />
-            )
-          )}
+            );
+          })}
         </List>
       </Drawer>
     </>

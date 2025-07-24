@@ -34,12 +34,12 @@ const ChatPage = () => {
       {settingData.greeting.light_logo_url && (
         <Image
           src={settingData.greeting.light_logo_url || homeConfig.logo}
-          width={300}
+          width={250}
           height={100}
           alt="logo"
         />
       )}
-      <Greeting className="mt-4"/>
+      <Greeting className="mt-4" />
       <SearchBar
         className="mt-8 mx-2 w-full"
         placeholder={settingData.prompt.input}

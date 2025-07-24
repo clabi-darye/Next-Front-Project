@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 
+import clsx from "clsx";
+
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -7,10 +9,11 @@ import SpeechRecognition, {
 import MicIcon from "@/public/icons/MicIcon";
 
 interface VoiceSearchProps {
+  className?: string;
   onSearch: (transcript: string) => void;
 }
 
-const VoiceSearch = ({ onSearch }: VoiceSearchProps) => {
+const VoiceSearch = ({ className, onSearch }: VoiceSearchProps) => {
   const {
     transcript,
     listening,
@@ -44,7 +47,7 @@ const VoiceSearch = ({ onSearch }: VoiceSearchProps) => {
     <button
       onClick={handleListening}
       aria-label="음성 검색"
-      className="w-[62px]"
+      className={clsx(className, "w-[62px]")}
     >
       <MicIcon className={listening ? "animate-pulse" : ""} />
     </button>

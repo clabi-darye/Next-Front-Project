@@ -10,7 +10,7 @@ import SearchFilter from "@/components/Drawer/SearchFilter/SearchFilter";
 // Drawer 전역 설정 값
 export const drawerConfig = {
   drawerWidth: 240, // drawer 너비(px)
-  showLogo: true, // 로고 표시 여부
+  showLogo: false, // 로고 표시 여부
   activeMenu: ["chat", "history", "filter"], // 표시할 메뉴 key 값들
 };
 

@@ -36,7 +36,7 @@ const HomePage = () => {
         {settingData.greeting.light_logo_url && (
           <Image
             src={settingData.greeting.light_logo_url || homeConfig.logo}
-            width={300}
+            width={250}
             height={100}
             alt="logo"
           />

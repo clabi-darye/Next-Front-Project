@@ -12,7 +12,6 @@ import { InputAdornment, TextField, styled } from "@mui/material";
 
 import SendIcon from "@/public/icons/SendIcon";
 
-
 interface SearchBarProps {
   className?: string;
   placeholder?: string;
@@ -32,7 +31,7 @@ const InnerField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
     borderRadius: "30px",
     backgroundColor: "white",
-    padding:"12px",
+    padding: "12px",
     "& fieldset": {
       borderColor: "transparent",
     },
@@ -42,7 +41,6 @@ const InnerField = styled(TextField)({
     "&.Mui-focused fieldset": {
       borderColor: "transparent",
     },
-
   },
 });
 
@@ -70,31 +68,32 @@ const SearchBar = ({
   return (
     <div className={`relative flex items-end ${className} `}>
       <div className="flex-1">
-         <GradientWrapper>
-          <InnerField           
-              fullWidth
-              multiline
-              maxRows={5}
-              placeholder={listening ? "" : placeholder}
-              value={listening ? "" : searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSubmit(searchText);
-                }
-              }}
-              slotProps={{
-                input: {
-                  endAdornment: !listening && (
-                    <InputAdornment position="end">
-                      <div onClick={() => handleSubmit(searchText)}>
-                        <SendIcon />
-                      </div>
-                    </InputAdornment>
-                  ),
-                },
-              }} />
+        <GradientWrapper>
+          <InnerField
+            fullWidth
+            multiline
+            maxRows={5}
+            placeholder={listening ? "" : placeholder}
+            value={listening ? "" : searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit(searchText);
+              }
+            }}
+            slotProps={{
+              input: {
+                endAdornment: !listening && (
+                  <InputAdornment position="end">
+                    <div onClick={() => handleSubmit(searchText)}>
+                      <SendIcon />
+                    </div>
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
         </GradientWrapper>
       </div>
 
@@ -107,7 +106,7 @@ const SearchBar = ({
       </div>
 
       {SearchBoxConfig.isVoiceSearch && (
-        <VoiceSearch onSearch={setSearchText} />
+        <VoiceSearch onSearch={setSearchText} className="ml-2" />
       )}
     </div>
   );

@@ -2,7 +2,7 @@
 
 import AiDisclaimer from "@/components/Common/AiDisclaimer";
 
-const ChatLayout = ({
+const shareLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -15,4 +15,4 @@ const ChatLayout = ({
   );
 };
 
-export default ChatLayout;
+export default shareLayout;

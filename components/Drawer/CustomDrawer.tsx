@@ -155,7 +155,7 @@ const CustomDrawer = () => {
               menu.key === "history" && histories.length === 0;
             if (isHistoryEmpty) return null;
 
-            if (menu.key === "button") {
+            if (menu.type === "button") {
               return (
                 <DrawerButtonItem
                   key={menu.key}

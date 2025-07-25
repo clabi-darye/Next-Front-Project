@@ -9,7 +9,6 @@ import { useCreateChatGroup } from "@/hooks/useChatData";
 import Image from "next/image";
 import SearchBar from "@/components/Common/SearchBar";
 import Greeting from "@/components/Common/Greeting";
-import AiDisclaimer from "@/components/Common/AiDisclaimer";
 import FiltersView from "@/components/Common/FiltersView";
 
 import { homeConfig } from "@/config/home.config";
@@ -49,7 +48,6 @@ const HomePage = () => {
         />
         <FiltersView></FiltersView>
       </div>
-      <AiDisclaimer className="mt-2" />
     </div>
   );
 };

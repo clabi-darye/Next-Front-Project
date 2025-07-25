@@ -1,7 +1,9 @@
 "use client";
 
 import { useDrawerStore } from "@/store/useDrawerStore";
-import { drawerConfig } from "../config/drawer.config";
+import { drawerConfig } from "../../config/drawer.config";
+
+import AiDisclaimer from "@/components/Common/AiDisclaimer";
 
 //drawer 상태(isOpen)에 따라 레이아웃이 바뀌는 형태라 template로 분리
 const Template = ({ children }: { children: React.ReactNode }) => {
@@ -16,7 +18,10 @@ const Template = ({ children }: { children: React.ReactNode }) => {
         transitionDuration: "0.225s",
       }}
     >
-      {children}
+      <div className="flex flex-col h-full bg-chat-bg">
+        <section className="flex-1 overflow-hidden">{children}</section>
+        <AiDisclaimer className="m-auto p-2" />
+      </div>
     </section>
   );
 };

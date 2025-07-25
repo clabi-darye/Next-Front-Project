@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getSatisfactionId, saveSatisfactionId } from "@/lib/indexedDB";
+import { getSatisfactionId, updateSatisfactionGroups } from "@/lib/indexedDB";
 import { useAlertStore } from "@/store/useAlertStore";
 
 import { Button, IconButton, InputBase, Menu, Paper } from "@mui/material";
@@ -66,9 +66,11 @@ const FeedBack = ({ streamText, chatId }: FeedBackProps) => {
       });
 
       if (res?.satisfaction_id) {
-        await saveSatisfactionId({
-          chatId,
+        await updateSatisfactionGroups({
+          chatGroupId: chatId,
           satisfactionId: res.satisfaction_id,
+          memo: feedBack,
+          createdDate: new Date().toISOString(),
         });
       }
 

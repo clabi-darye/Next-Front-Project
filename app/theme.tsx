@@ -30,6 +30,16 @@ const theme = createTheme({
       contrastText: "#757575",
     },
   },
+
+  components: {
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          padding: "16px 24px 0",
+        },
+      },
+    },
+  },
 });
 
 export default theme;

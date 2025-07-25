@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { SearchBoxConfig } from "@/config/common";
+import { CommonConfig } from "@/config/common";
 
 import { useSpeechRecognition } from "react-speech-recognition";
 import posthog from "posthog-js";
@@ -98,9 +98,7 @@ const SearchBar = ({
         <VoiceVisualizer />
       </div>
 
-      {SearchBoxConfig.isVoiceSearch && (
-        <VoiceSearch onSearch={setSearchText} />
-      )}
+      {CommonConfig.isVoiceSearch && <VoiceSearch onSearch={setSearchText} />}
     </div>
   );
 };

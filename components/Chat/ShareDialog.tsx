@@ -18,6 +18,8 @@ import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import CloseIcon from "@mui/icons-material/Close";
 
 import { createShareCode } from "@/services/chatService";
+import { updateShareChatGroups } from "@/lib/indexedDB";
+import { useChatHistoryStore } from "@/store/useChatHistoryStore";
 
 interface ShareDialogProps {
   isOpen: boolean;
@@ -29,6 +31,9 @@ const ShareDialog = ({ isOpen, onClose }: ShareDialogProps) => {
   const chatGroupId = params.chatGroupId;
 
   const openAlert = useAlertStore((state) => state.openAlert);
+  const histories = useChatHistoryStore((state) => state.histories);
+
+  const chat = histories.find((item) => item.id === chatGroupId);
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -50,6 +55,12 @@ const ShareDialog = ({ isOpen, onClose }: ShareDialogProps) => {
       navigator.clipboard.writeText(
         `${process.env.NEXT_PUBLIC_BASE_URL}/share/${code.encoded_data}`
       );
+
+      await updateShareChatGroups({
+        chatGroupId: Number(chatGroupId),
+        title: chat?.title ?? "",
+        createdDate: new Date().toISOString(),
+      });
 
       openAlert({
         severity: "success",

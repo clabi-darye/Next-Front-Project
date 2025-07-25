@@ -198,8 +198,9 @@ export const useAiStreaming = (
     setChatId(data.chat_id);
 
     await saveChatGroup({
-      id: chatGroupId,
+      chatGroupId: chatGroupId,
       title: question,
+      createdDate: new Date().toISOString(),
     });
 
     const hasHistory = await histories.some(

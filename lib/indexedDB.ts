@@ -43,7 +43,7 @@ export const openDatabase = async (): Promise<IDBDatabase> => {
         });
       }
       if (!db.objectStoreNames.contains(CHAT_SHARED_STORE)) {
-        // 만족도 스토어 생성
+        // 공유된 채팅 스토어 생성
         db.createObjectStore(CHAT_SHARED_STORE, { keyPath: "chatGroupId" });
       }
     };
@@ -133,4 +133,9 @@ export const updateShareChatGroups = async (
 ): Promise<void> => {
   const store = await getStore(CHAT_SHARED_STORE, "readwrite");
   await wrapRequest(store.put(item));
+};
+
+export const deleteShareChatGroups = async (id: number): Promise<void> => {
+  const store = await getStore(CHAT_SHARED_STORE, "readwrite");
+  await wrapRequest(store.delete(id));
 };

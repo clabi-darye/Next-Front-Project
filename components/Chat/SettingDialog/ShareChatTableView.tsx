@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getShareChatGroups } from "@/lib/indexedDB";
+import { deleteShareChatGroups, getShareChatGroups } from "@/lib/indexedDB";
 import { ShareDBItem } from "@/types/indexedDB";
 import {
   Table,
@@ -10,6 +10,7 @@ import {
   Button,
 } from "@mui/material";
 import dayjs from "dayjs";
+import { useAlertStore } from "@/store/useAlertStore";
 
 type ShareColumnKey = keyof ShareDBItem | "delete";
 
@@ -20,16 +21,41 @@ const columns: { label: string; key: ShareColumnKey }[] = [
 ];
 
 const ShareChatTableView = () => {
+  const openAlert = useAlertStore((state) => state.openAlert);
+
   const [data, setData] = useState<ShareDBItem[]>([]);
 
+  const fetchData = async () => {
+    try {
+      const result = await getShareChatGroups();
+      setData(result);
+    } catch {
+      openAlert({
+        severity: "error",
+        message: "데이터를 불러오는 데 실패했습니다.",
+      });
+    }
+  };
+
   useEffect(() => {
-    getShareChatGroups().then(setData);
+    fetchData();
   }, []);
 
-  // 삭제 함수 예시 (실제 구현 필요)
-  const handleDelete = (id: number) => {
-    console.log("삭제", id);
-    // TODO: 삭제 로직 추가
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteShareChatGroups(id);
+      await fetchData();
+
+      openAlert({
+        severity: "success",
+        message: "성공적으로 삭제되었습니다.",
+      });
+    } catch {
+      openAlert({
+        severity: "error",
+        message: "잠시 후 다시 시도해주세요",
+      });
+    }
   };
 
   return (

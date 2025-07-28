@@ -123,9 +123,14 @@ const ChatDetailPage = ({
   // 콘텐츠 변화 시 자동 스크롤
   useEffect(() => {
     if (!isUserScrolling) {
-      scrollToBottom();
+      // recommendedQuestions까지 DOM에 그려질 시간을 살짝 기다렸다가 스크롤
+      const timeout = setTimeout(() => {
+        scrollToBottom();
+      }, 0);
+
+      return () => clearTimeout(timeout);
     }
-  }, [streamStages, newQuestion, streamText]);
+  }, [streamStages, newQuestion, streamText, references, recommendedQuestions]);
 
   // 새 질문에 대한 응답이 완료되었을 때 실행
   useEffect(() => {

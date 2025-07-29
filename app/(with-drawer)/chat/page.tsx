@@ -39,7 +39,7 @@ const ChatPage = () => {
       )}
       <Greeting className="mt-4" />
       <SearchBar
-        className="mt-8 mx-2 w-full"
+        className="mt-8 mx-2"
         placeholder={settingData.prompt.input}
         onSearch={handleSearch}
       />

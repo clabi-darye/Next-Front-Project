@@ -49,7 +49,6 @@ const PastChatsListview = ({ chatList, onSearch }: PastChatsListviewProps) => {
                   <ReferencesView
                     references={chat.references}
                     className="mt-2"
-                    onClick={(item) => console.log(item)}
                   />
                 )}
                 {chat.chatId && (

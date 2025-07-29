@@ -40,7 +40,7 @@ const HomePage = () => {
         )}
         <Greeting className="mt-4" />
         <SearchBar
-          className="mt-8 w-full"
+          className="mt-8"
           placeholder={settingData.prompt.input}
           onSearch={handleSearch}
         />

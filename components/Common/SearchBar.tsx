@@ -8,9 +8,10 @@ import posthog from "posthog-js";
 
 import VoiceSearch from "./VoiceSearch";
 import VoiceVisualizer from "./VoiceVisualizer";
-import { InputAdornment, TextField, styled } from "@mui/material";
-import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import RoundedTextField from "./RoundedTextField";
+import { InputAdornment, styled } from "@mui/material";
+
+import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 
 interface SearchBarProps {
   className?: string;
@@ -60,7 +61,7 @@ const SearchBar = ({
   };
 
   return (
-    <div className={`relative flex items-center ${className}`}>
+    <div className={`relative flex items-center w-full ${className}`}>
       <div className="flex-1">
         <CustomField
           fullWidth

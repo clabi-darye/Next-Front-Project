@@ -16,6 +16,7 @@ import UserActionForm from "@/components/Chat/UserActionForm";
 import PastChatsListview from "@/components/Chat/PastChatsListview";
 import CurrentChatView from "@/components/Chat/CurrentChatView";
 import ChatNavigation from "@/components/Chat/ChatNavigation";
+import ChatActionButton from "@/components/Chat/ChatActionButton";
 
 import { createShareCode } from "@/services/chatService";
 
@@ -53,9 +54,11 @@ const ChatDetailPage = ({
   } = useAiStreaming(groupId, newQuestion, isRecommend);
 
   const {
-    containerRef: chatWrapRef,
+    containerRef,
     isUserScrolling,
+    showScrollButton,
     scrollToBottom,
+    scrollToTop,
   } = useAutoScroll<HTMLDivElement>();
 
   // 초기 마운트 시 처리
@@ -177,7 +180,7 @@ const ChatDetailPage = ({
   };
 
   return (
-    <div className="h-full w-full flex flex-col justify-between relative">
+    <div className="h-full w-full flex flex-col justify-between ">
       {!newQuestion && pastChats.length === 0 && (
         <div className="text-lg text-gray-400 absolute top-[50%] left-[50%] translate-[-50%]">
           무엇이든 질문해 주세요
@@ -190,10 +193,10 @@ const ChatDetailPage = ({
 
       <div
         id="chatwrap"
-        ref={chatWrapRef}
+        ref={containerRef}
         className="flex-1 overflow-y-auto p-4"
       >
-        <div className="max-w-[640px] m-auto">
+        <div className="max-w-[640px] m-auto mb-[60px]">
           {/* 이전 채팅 목록 */}
           {pastChats.length > 0 && (
             <PastChatsListview chatList={pastChats} onSearch={handleSearch} />
@@ -215,11 +218,30 @@ const ChatDetailPage = ({
         </div>
       </div>
 
-      <SearchBar
-        className="mt-4 md:mx-auto md:max-w-[640px] md:px-0 max-w-full w-full px-2"
-        placeholder={settingData.prompt.input}
-        onSearch={handleSearch}
-      />
+      <div className="relative">
+        <ChatActionButton
+          isStreaming={isStreaming}
+          isUserScrolling={isUserScrolling}
+          showScrollButton={showScrollButton}
+          onClickStop={() => {
+            // 스트리밍 중단
+            abortStreaming?.();
+          }}
+          onClickScroll={() => {
+            // 스크롤 이동 (위/아래)
+            if (isUserScrolling) {
+              scrollToBottom();
+            } else {
+              scrollToTop();
+            }
+          }}
+        />
+        <SearchBar
+          className="md:mx-auto md:max-w-[640px] md:px-0 max-w-full px-2"
+          placeholder={settingData.prompt.input}
+          onSearch={handleSearch}
+        />
+      </div>
     </div>
   );
 };

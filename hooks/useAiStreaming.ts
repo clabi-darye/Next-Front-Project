@@ -8,19 +8,15 @@ import { handleStream } from "@/lib/streamHandler";
 import { useUserActionStore } from "@/store/useChatStore";
 import { useFilterStore } from "@/store/useFilterStore";
 
+import { saveChat } from "@/services/chatService";
+
 import {
   StreamEndEvent,
   StreamStage,
   UserActionData,
   UserActionFormData,
 } from "@/types/Stream";
-import {
-  Chat,
-  ChatResponse,
-  RecommendedQuestions,
-  Reference,
-} from "@/types/Chat";
-import { saveChat } from "@/services/chatService";
+import { ChatResponse, RecommendedQuestions, Reference } from "@/types/Chat";
 
 export const useAiStreaming = (
   chatGroupId: number | undefined,
@@ -116,8 +112,6 @@ export const useAiStreaming = (
   };
 
   const handleComplete = async (event: StreamEndEvent) => {
-    setIsStreaming(false);
-
     if (!chatGroupId) return;
 
     if (event.form && event.next_endpoint) {
@@ -163,6 +157,7 @@ export const useAiStreaming = (
       );
     }
 
+    setIsStreaming(false);
     saveChatHistory(event, chatGroupId);
   };
 

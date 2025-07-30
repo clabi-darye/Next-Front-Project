@@ -25,7 +25,7 @@ const ChatActionButton = ({
           <StopCircleOutlinedIcon
             fontSize="large"
             sx={{
-              backgroundColor: "#fff",
+              backgroundColor: "var(--chat-bg)",
               borderRadius: "50%",
             }}
           />
@@ -37,7 +37,7 @@ const ChatActionButton = ({
           <ArrowCircleDownIcon
             fontSize="large"
             sx={{
-              backgroundColor: "#fff",
+              backgroundColor: "var(--chat-bg)",
               borderRadius: "50%",
               transition: "transform 0.3s ease",
               transform: isUserScrolling ? "none" : "rotate(180deg)",

@@ -13,13 +13,13 @@ export const useAutoScroll = <T extends HTMLElement>() => {
     if (!containerRef.current) return false;
     const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
     const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
-    return distanceFromBottom <= clientHeight * 0.2;
+    return distanceFromBottom <= clientHeight * 0.1;
   };
 
   const isNearTop = () => {
     if (!containerRef.current) return false;
     const { scrollTop, clientHeight } = containerRef.current;
-    return scrollTop <= clientHeight * 0.2;
+    return scrollTop <= clientHeight * 0.1;
   };
 
   const scrollToBottom = () => {
@@ -47,7 +47,7 @@ export const useAutoScroll = <T extends HTMLElement>() => {
       const nearTop = isNearTop();
 
       setIsUserScrolling(!nearBottom);
-      setShowScrollButton(nearTop || nearBottom);
+      setShowScrollButton(!nearTop);
     };
 
     el.addEventListener("scroll", handleScroll);

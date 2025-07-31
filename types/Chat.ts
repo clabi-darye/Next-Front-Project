@@ -115,3 +115,8 @@ export interface Satisfaction {
   chat_id: number;
   satisfaction_id?: number;
 }
+
+export interface ChatHistoryItem {
+  id: number | string;
+  title: string;
+}

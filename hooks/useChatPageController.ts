@@ -3,12 +3,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import { useAiStreaming } from "@/hooks/useAiStreaming";
-import { useFetchSavedChat } from "@/hooks/useChatData";
 import { base64Decode } from "@/utils/encoding";
-import { useFetchSetting } from "@/hooks/useHomeData";
 import { useAlertStore } from "@/store/useAlertStore";
+import { useProjectStore } from "@/store/useProjectStore";
 
-import { createShareCode } from "@/services/chatService";
+import { createShareCode, fetchSavedChat } from "@/services/chatService";
 
 import type { ChatGroupResponse, ChatListItem } from "@/types/Chat";
 
@@ -22,9 +21,7 @@ export const useChatPageController = (
   const router = useRouter();
   const queryClient = useQueryClient();
   const openAlert = useAlertStore((state) => state.openAlert);
-
-  const { mutateAsync: fetchSavedChat } = useFetchSavedChat();
-  const { data: settingData } = useFetchSetting(); // 환경 설정 데이터
+  const projectInfo = useProjectStore((state) => state.projectInfo);
 
   const [groupId, setGroupId] = useState<number | undefined>(undefined);
   const [pastChats, setPastChats] = useState<ChatListItem[]>([]);
@@ -69,9 +66,7 @@ export const useChatPageController = (
         ]);
 
         // 서버에서 저장된 채팅 이력 불러오기
-        const { chats } = await fetchSavedChat({
-          encodedData: shareCodeData.encoded_data,
-        });
+        const { chats } = await fetchSavedChat(shareCodeData.encoded_data);
 
         // 채팅 이력을 포맷팅 후 상태로 저장
         setPastChats(
@@ -181,7 +176,7 @@ export const useChatPageController = (
   };
 
   return {
-    settingData, // 사용자 설정
+    projectInfo, // 사용자 설정
     pastChats, // 이전 채팅 목록
     newQuestion, // 현재 입력 중인 질문
     streamStages, // 스트리밍 단계별 결과

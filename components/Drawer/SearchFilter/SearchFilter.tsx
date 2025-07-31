@@ -2,7 +2,6 @@ import { useEffect, useState, useCallback } from "react";
 import posthog from "posthog-js";
 
 import { useFilterStore } from "@/store/useFilterStore";
-import { useFetchFilters } from "@/hooks/useHomeData";
 
 import {
   Collapse,
@@ -13,6 +12,8 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
+import { fetchFilters } from "@/services/homeService";
 
 import {
   SelectAllListItemButton,
@@ -25,7 +26,18 @@ import {
 import { Filter } from "@/types/Filter";
 
 const SearchFilter = () => {
-  const { data: filters = [], mutateAsync: updateFilters } = useFetchFilters();
+  const [filters, setFilters] = useState<Filter[]>([]);
+
+  useEffect(() => {
+    updateFilters();
+  }, []);
+
+  const updateFilters = async (searchText?: string) => {
+    try {
+      const filters = await fetchFilters({ search: searchText });
+      setFilters(filters);
+    } catch (error) {}
+  };
 
   const selectedFilters = useFilterStore((state) => state.selectedFilters);
   const setSelectedFilters = useFilterStore(
@@ -35,10 +47,6 @@ const SearchFilter = () => {
   const [searchText, setSearchText] = useState("");
   const [isFilterVisible, setIsFilterVisible] = useState(true);
   const [expandedMap, setExpandedMap] = useState<Record<number, boolean>>({});
-
-  useEffect(() => {
-    updateFilters({});
-  }, [updateFilters]);
 
   const isFilterSelected = useCallback(
     (filter: Filter) => selectedFilters.some((f) => f.id === filter.id),
@@ -104,7 +112,7 @@ const SearchFilter = () => {
 
   const handleSearchFilter = async () => {
     try {
-      await updateFilters({ search: searchText });
+      await updateFilters(searchText);
     } catch (error) {
       console.error(error);
     }

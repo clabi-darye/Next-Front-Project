@@ -20,7 +20,7 @@ const ChatDetailPage = ({
 
   // 채팅 그룹(chatGroupId)에 대한 상태와 로직을 제공하는 커스텀 훅
   const {
-    settingData,
+    projectInfo,
     pastChats,
     newQuestion,
     streamStages,
@@ -111,7 +111,7 @@ const ChatDetailPage = ({
         {/* 검색 입력창 */}
         <SearchBar
           className="md:mx-auto md:max-w-[640px] md:px-0 max-w-full px-2"
-          placeholder={settingData?.prompt.input}
+          placeholder={projectInfo?.prompt.input}
           onSearch={handleSearch}
         />
       </div>

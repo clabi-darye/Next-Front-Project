@@ -5,6 +5,7 @@ import {
   ChatGroupResponse,
   ChatResponse,
   Satisfaction,
+  SavedChats,
 } from "@/types/Chat";
 
 export const createChatGroup = async (
@@ -42,10 +43,7 @@ export const createShareCode = async (
 
 export const fetchSavedChat = async (
   encodedData: string
-): Promise<{
-  chat_group_id: number;
-  chats: Chat[];
-}> => {
+): Promise<SavedChats> => {
   return apiClient(`/chat/group/share/${encodedData}`, {
     method: "GET",
   });

@@ -120,3 +120,8 @@ export interface ChatHistoryItem {
   id: number | string;
   title: string;
 }
+
+export interface SavedChats {
+  chat_group_id: number;
+  chats: Chat[];
+}

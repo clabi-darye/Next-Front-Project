@@ -10,7 +10,7 @@ import PastChatsListview from "@/components/Chat/PastChatsListview";
 import CurrentChatView from "@/components/Chat/CurrentChatView";
 import ChatNavigation from "@/components/Chat/ChatNavigation";
 import ChatActionButton from "@/components/Chat/ChatActionButton";
-import { ChatListItem, SavedChats } from "@/types/Chat";
+import { SavedChats } from "@/types/Chat";
 import { useProjectStore } from "@/store/useProjectStore";
 
 interface ChatDetailPageViewProps {
@@ -59,10 +59,12 @@ const ChatDetailPageView = ({
     }
   }, [streamStages, newQuestion, streamText, references, recommendedQuestions]);
 
+  const hasPastChats = pastChats.length > 0;
+
   return (
     <div className="h-full w-full flex flex-col justify-between">
       {/* 과거 채팅이 있을 경우 상단 네비게이션 노출 */}
-      {pastChats.length > 0 && <ChatNavigation />}
+      {hasPastChats && <ChatNavigation />}
 
       {/* 채팅 영역: 자동 스크롤 대상 영역 */}
       <div
@@ -75,7 +77,7 @@ const ChatDetailPageView = ({
           <UserActionForm />
 
           {/* 과거 채팅 목록 렌더링 */}
-          {pastChats.length > 0 && (
+          {hasPastChats && (
             <PastChatsListview chatList={pastChats} onSearch={handleSearch} />
           )}
 

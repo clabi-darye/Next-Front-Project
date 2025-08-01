@@ -34,7 +34,7 @@ const ChatPage = () => {
           {projectInfo?.greeting?.light_logo_url && (
             <Image
               src={projectInfo.greeting.light_logo_url}
-              width={300}
+              width={250}
               height={100}
               alt="logo"
             />

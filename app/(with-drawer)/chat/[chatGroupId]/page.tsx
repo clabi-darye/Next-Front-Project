@@ -4,11 +4,11 @@ import { base64Decode } from "@/utils/encoding";
 import { notFound } from "next/navigation";
 
 interface ChatDetailPageProps {
-  params: { chatGroupId: string };
+  params: Promise<{ chatGroupId: string }>;
 }
 
 const ChatDetailPage = async ({ params }: ChatDetailPageProps) => {
-  const { chatGroupId } = params;
+  const { chatGroupId } = await params;
 
   console.log("ChatDetailPage - chatGroupId:", chatGroupId);
 

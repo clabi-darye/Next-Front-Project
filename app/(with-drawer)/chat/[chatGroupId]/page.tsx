@@ -9,15 +9,12 @@ interface ChatDetailPageProps {
 const ChatDetailPage = async ({ params }: ChatDetailPageProps) => {
   const { chatGroupId } = await params;
 
-  const decoded = base64Decode(chatGroupId);
-  if (!decoded) {
+  if (!chatGroupId) {
     throw new Error("Not found");
   }
 
+  const decoded = base64Decode(chatGroupId);
   const groupId = Number(decoded);
-  if (isNaN(groupId)) {
-    throw new Error("Not found");
-  }
 
   // 서버에서 초기 데이터 fetch
   const shareCodeData = await createShareCode(groupId);

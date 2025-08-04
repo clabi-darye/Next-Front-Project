@@ -14,7 +14,7 @@ export const useCreateChatGroup = () => {
       queryClient.setQueryData(key, data);
 
       queryClient.setQueryDefaults(key, {
-        gcTime: 1000 * 60 * 1,
+        gcTime: 500,
       });
     },
   });

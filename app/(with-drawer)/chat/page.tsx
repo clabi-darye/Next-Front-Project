@@ -54,7 +54,7 @@ const ChatPage = () => {
           )}
           <Greeting className="mt-4" />
           <SearchBar
-            className="mt-8 mx-2 min-h-[65px]"
+            className="mt-4 mx-2 min-h-[65px]"
             placeholder={projectInfo.prompt.input}
             onSearch={handleSearch}
           />

@@ -54,7 +54,7 @@ const HomePage = () => {
       )}
       <Greeting className="mt-4" />
       <SearchBar
-        className="mt-8 min-h-[65px]"
+        className="mt-4 min-h-[65px]"
         placeholder={projectInfo.prompt.input}
         onSearch={handleSearch}
       />

@@ -15,8 +15,6 @@ const FiltersView = () => {
         justifyContent: "center",
         alignItems: "center",
         flexWrap: "wrap",
-        maxHeight: "150px",
-        overflowX: "auto",
       }}
     >
       {filterTags.length > 0 &&

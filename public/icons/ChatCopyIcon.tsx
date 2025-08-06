@@ -2,7 +2,7 @@ import { mergeClassNames } from "@/lib/mergeClassNames";
 
 export default function ChatCopyIcon({ className }: { className?: string }) {
   return (
-    <div className={mergeClassNames(`${className} w-[20px] h-[20px]`)}>
+    <div className={mergeClassNames("w-[20px] h-[20px]", className)}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="20"

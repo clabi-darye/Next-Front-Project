@@ -32,7 +32,9 @@ const Template = ({ children }: TemplateProps) => {
           <div className="absolute inset-0 bg-black opacity-50 z-50" />
         )}
 
-        <section className="flex-1 overflow-hidden">{children}</section>
+        <section className="flex-1 overflow-x-hidden overflow-y-auto">
+          {children}
+        </section>
         <AiDisclaimer className="m-auto p-2" />
       </div>
     </section>

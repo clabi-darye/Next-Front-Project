@@ -2,7 +2,7 @@ import { mergeClassNames } from "@/lib/mergeClassNames";
 
 export default function SendIcon({ className }: { className?: string }) {
   return (
-    <div className={mergeClassNames(`${className} w-[31px] h-[30px]`)}>
+    <div className={mergeClassNames(className, "w-[31px] h-[30px]")}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="31"

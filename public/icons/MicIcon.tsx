@@ -2,7 +2,7 @@ import { mergeClassNames } from "@/lib/mergeClassNames";
 
 export default function MicIcon({ className }: { className?: string }) {
   return (
-    <div className={mergeClassNames(`${className} w-[54px] h-[54px]`)}>
+    <div className={mergeClassNames(className, "w-[54px] h-[54px]")}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="62"

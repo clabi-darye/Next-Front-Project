@@ -1,8 +1,10 @@
-import { useAlertStore } from "@/store/useAlertStore";
-import { base64Decode } from "@/utils/encoding";
+import { useEffect, useState } from "react";
+
 import { useParams } from "next/navigation";
-import { updateShareChatGroups } from "@/lib/indexedDB";
+import { useAlertStore } from "@/store/useAlertStore";
 import { useChatHistoryStore } from "@/store/useChatHistoryStore";
+import { base64Decode } from "@/utils/encoding";
+import { updateShareChatGroups } from "@/lib/indexedDB";
 
 import { createShareCode } from "@/services/chatService";
 
@@ -32,102 +34,95 @@ const ShareDialog = ({ isOpen, onClose }: ShareDialogProps) => {
   const openAlert = useAlertStore((state) => state.openAlert);
   const histories = useChatHistoryStore((state) => state.histories);
 
-  // 클립보드 복사를 위한 fallback 함수들
-  const fallbackCopyToClipboard = (text: string): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      // 텍스트 영역을 만들어서 선택 후 복사
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      textArea.style.position = "fixed";
-      textArea.style.left = "-999999px";
-      textArea.style.top = "-999999px";
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
+  const [shareUrl, setShareUrl] = useState("");
+  const [encodedData, setEncodedData] = useState("");
+  const [parsedChatGroupId, setParsedChatGroupId] = useState<number | null>(
+    null
+  );
 
+  useEffect(() => {
+    if (!chatGroupId) return;
+
+    const fetchShareUrl = async () => {
       try {
-        const successful = document.execCommand("copy");
-        document.body.removeChild(textArea);
-        if (successful) {
-          resolve();
-        } else {
-          reject(new Error("document.execCommand failed"));
-        }
-      } catch (err) {
-        document.body.removeChild(textArea);
-        reject(err);
+        const parsed = base64Decode(chatGroupId.toString());
+        setParsedChatGroupId(Number(parsed));
+        const { encoded_data } = await createShareCode(Number(parsed));
+        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/share/${encoded_data}`;
+        setShareUrl(url);
+        setEncodedData(encoded_data);
+      } catch (error) {
+        console.error("공유 URL 생성 실패:", error);
       }
-    });
-  };
+    };
 
-  const copyToClipboard = async (text: string): Promise<void> => {
-    // Clipboard API 시도
+    fetchShareUrl();
+  }, [chatGroupId]);
+
+  const copyToClipboard = async (text: string) => {
     if (navigator.clipboard && window.isSecureContext) {
       try {
         await navigator.clipboard.writeText(text);
-        return;
-      } catch (err) {
-        console.warn("Clipboard API failed, trying fallback:", err);
+        return true;
+      } catch {
+        // fallback 진행
       }
     }
-
-    // Fallback: document.execCommand 사용
-    try {
-      await fallbackCopyToClipboard(text);
-    } catch (err) {
-      // 최후 수단: 사용자에게 수동 복사 안내
-      openAlert({
-        severity: "error",
-        message: `클립보드 복사에 실패했습니다. 링크를 직접 복사해주세요. Share URL : ${text}`,
-        openTime: 10000,
-      });
-    }
+    // fallback 방식
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    const successful = document.execCommand("copy");
+    document.body.removeChild(textarea);
+    return successful;
   };
 
   const handleCopy = async () => {
-    if (!chatGroupId) return;
+    if (!shareUrl || !chatGroupId || !encodedData) return;
 
     try {
-      const parsed = base64Decode(chatGroupId.toString());
-      const { encoded_data } = await createShareCode(Number(parsed));
-      const shareUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/share/${encoded_data}`;
+      const copied = await copyToClipboard(shareUrl);
 
-      await copyToClipboard(shareUrl);
+      if (copied) {
+        openAlert({
+          severity: "success",
+          message: "링크가 복사되었습니다.",
+        });
 
-      openAlert({
-        severity: "success",
-        message: "링크가 복사되었습니다.",
-      });
-
-      updateIndexedDB(parsed, encoded_data);
-    } catch (error) {
+        await updateIndexedDB();
+      } else {
+        throw new Error("복사 실패");
+      }
+    } catch {
       openAlert({
         severity: "error",
-        message: `잠시 후 다시 시도해주세요`,
+        message: "잠시 후 다시 시도해주세요",
       });
     }
   };
 
-  const updateIndexedDB = async (chatGroupId: string, encodedData: string) => {
+  const updateIndexedDB = async () => {
+    if (!parsedChatGroupId || !encodedData) return;
     try {
       const chat = await histories.find(
-        (item) => item.id === Number(chatGroupId)
+        (item) => item.id === parsedChatGroupId
       );
-
       if (!chat) return;
 
       await updateShareChatGroups({
-        chatGroupId: Number(chatGroupId),
+        chatGroupId: parsedChatGroupId,
         title: chat.title,
         createdDate: new Date().toISOString(),
         encodedData,
       });
-    } catch (error) {
+    } catch {
       console.log("IndexedDB 저장 실패");
     }
   };
-
-  const linkPreview = `${process.env.NEXT_PUBLIC_BASE_URL}/share/${chatGroupId}`;
 
   return (
     <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
@@ -153,18 +148,15 @@ const ShareDialog = ({ isOpen, onClose }: ShareDialogProps) => {
         <RoundedTextField
           fullWidth
           disabled
-          placeholder="검색어 입력"
           sx={{ mt: 3 }}
-          value={linkPreview}
+          value={shareUrl}
           slotProps={{
             input: {
               endAdornment: (
                 <InputAdornment position="end">
                   <Button
                     variant="outlined"
-                    sx={{
-                      borderRadius: "32px",
-                    }}
+                    sx={{ borderRadius: "32px" }}
                     onClick={handleCopy}
                   >
                     <InsertLinkIcon />

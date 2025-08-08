@@ -112,7 +112,7 @@ const ShareDialog = ({ isOpen, onClose }: ShareDialogProps) => {
                     sx={{
                       borderRadius: "32px",
                     }}
-                    onClick={() => handleCopy()}
+                    onClick={handleCopy}
                   >
                     <InsertLinkIcon />
                     링크 복사

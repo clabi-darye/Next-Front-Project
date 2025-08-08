@@ -46,17 +46,19 @@ const ShareDialog = ({ isOpen, onClose }: ShareDialogProps) => {
       try {
         const parsed = base64Decode(chatGroupId.toString());
         setParsedChatGroupId(Number(parsed));
+
         const { encoded_data } = await createShareCode(Number(parsed));
+        setEncodedData(encoded_data);
+
         const url = `${process.env.NEXT_PUBLIC_BASE_URL}/share/${encoded_data}`;
         setShareUrl(url);
-        setEncodedData(encoded_data);
       } catch (error) {
         console.error("공유 URL 생성 실패:", error);
       }
     };
 
     fetchShareUrl();
-  }, [chatGroupId]);
+  }, []);
 
   const copyToClipboard = async (text: string) => {
     if (navigator.clipboard && window.isSecureContext) {

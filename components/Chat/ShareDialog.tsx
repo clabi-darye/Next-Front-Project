@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
-
-import { useParams } from "next/navigation";
 import { useAlertStore } from "@/store/useAlertStore";
-import { useChatHistoryStore } from "@/store/useChatHistoryStore";
 import { base64Decode } from "@/utils/encoding";
+import { useParams } from "next/navigation";
 import { updateShareChatGroups } from "@/lib/indexedDB";
+import { useChatHistoryStore } from "@/store/useChatHistoryStore";
 
 import { createShareCode } from "@/services/chatService";
 
@@ -21,6 +19,7 @@ import RoundedTextField from "../Common/RoundedTextField";
 
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import CloseIcon from "@mui/icons-material/Close";
+import { useEffect, useState } from "react";
 
 interface ShareDialogProps {
   isOpen: boolean;
@@ -82,22 +81,18 @@ const ShareDialog = ({ isOpen, onClose }: ShareDialogProps) => {
   };
 
   const handleCopy = async () => {
-    if (!shareUrl || !chatGroupId || !encodedData) return;
+    if (!chatGroupId) return;
 
     try {
-      const copied = await copyToClipboard(shareUrl);
+      await copyToClipboard(shareUrl);
 
-      if (copied) {
-        openAlert({
-          severity: "success",
-          message: "링크가 복사되었습니다.",
-        });
+      openAlert({
+        severity: "success",
+        message: "링크가 복사되었습니다.",
+      });
 
-        await updateIndexedDB();
-      } else {
-        throw new Error("복사 실패");
-      }
-    } catch {
+      updateIndexedDB();
+    } catch (error) {
       openAlert({
         severity: "error",
         message: "잠시 후 다시 시도해주세요",
@@ -106,11 +101,13 @@ const ShareDialog = ({ isOpen, onClose }: ShareDialogProps) => {
   };
 
   const updateIndexedDB = async () => {
-    if (!parsedChatGroupId || !encodedData) return;
+    if (!parsedChatGroupId) return;
+
     try {
       const chat = await histories.find(
         (item) => item.id === parsedChatGroupId
       );
+
       if (!chat) return;
 
       await updateShareChatGroups({
@@ -119,10 +116,12 @@ const ShareDialog = ({ isOpen, onClose }: ShareDialogProps) => {
         createdDate: new Date().toISOString(),
         encodedData,
       });
-    } catch {
+    } catch (error) {
       console.log("IndexedDB 저장 실패");
     }
   };
+
+  const linkPreview = `${process.env.NEXT_PUBLIC_BASE_URL}/share/${chatGroupId}`;
 
   return (
     <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
@@ -148,15 +147,18 @@ const ShareDialog = ({ isOpen, onClose }: ShareDialogProps) => {
         <RoundedTextField
           fullWidth
           disabled
+          placeholder="검색어 입력"
           sx={{ mt: 3 }}
-          value={shareUrl}
+          value={linkPreview}
           slotProps={{
             input: {
               endAdornment: (
                 <InputAdornment position="end">
                   <Button
                     variant="outlined"
-                    sx={{ borderRadius: "32px" }}
+                    sx={{
+                      borderRadius: "32px",
+                    }}
                     onClick={handleCopy}
                   >
                     <InsertLinkIcon />

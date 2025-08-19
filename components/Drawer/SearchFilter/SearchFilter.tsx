@@ -200,7 +200,11 @@ const SearchFilter = () => {
                     onChange={(e) => handleFilterToggle(e, filter)}
                   />
                 }
-                label={highlightText(filter.division, searchText)}
+                label={
+                  searchText
+                    ? filter.division
+                    : highlightText(filter.division, searchText)
+                }
               />
             }
           />

@@ -20,7 +20,7 @@ const RecommendedQuestionsView = ({
       {questions.map((question, index) => (
         <div
           key={`${question}_${index}`}
-          className="border-b border-solid border-gray-300 py-[3px] cursor-pointer"
+          className="border-b border-solid border-gray-300 py-[3px] cursor-pointer hover:text-[var(--point)]"
           onClick={() => onClick?.(question.question)}
         >
           <SafeHTML html={question.question.replace(/\n/g, "<br />")} />

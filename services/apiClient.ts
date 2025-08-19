@@ -39,8 +39,12 @@ async function fetchWithRetry<TResponse>(
       throw new ApiError(`API Error: ${res.status}`, res.status, responseText);
     }
 
+    if (res.status === 204) {
+      return {} as TResponse;
+    }
+
     const parsed = JSON.parse(responseText) as { data: TResponse };
-    return parsed.data;
+    return parsed.data || ({} as TResponse);
   } catch (err) {
     if (attempt < retryCount) {
       console.warn(`Retrying... [${attempt + 1}]`, url);

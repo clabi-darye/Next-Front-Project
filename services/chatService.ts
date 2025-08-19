@@ -4,6 +4,7 @@ import {
   Chat,
   ChatGroupResponse,
   ChatResponse,
+  Memo,
   Satisfaction,
   SavedChats,
 } from "@/types/Chat";
@@ -56,5 +57,37 @@ export const updateSatisfaction = async (
   return apiClient(`/chat/satisfaction`, {
     method: "POST",
     data: satisfaction,
+  });
+};
+
+export const addMemo = async (
+  chat_id: number,
+  memo_content: string
+): Promise<Memo> => {
+  return apiClient(`/chat/memo`, {
+    method: "POST",
+    data: {
+      chat_id,
+      memo_content,
+    },
+  });
+};
+
+export const updateMemo = async (
+  memo_id: number,
+  memo_content: string
+): Promise<Memo> => {
+  return apiClient(`/chat/memo`, {
+    method: "PUT",
+    data: {
+      memo_id,
+      memo_content,
+    },
+  });
+};
+
+export const deleteMemo = async (memo_id: number): Promise<void> => {
+  return apiClient(`/chat/memo?memo_id=${memo_id}`, {
+    method: "DELETE",
   });
 };

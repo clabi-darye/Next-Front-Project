@@ -1,3 +1,5 @@
+"use client";
+
 import AnswerView from "./AnswerView";
 import QuestionView from "./QuestionView";
 import RecommendedQuestionsView from "./RecommendedQuestionsView";

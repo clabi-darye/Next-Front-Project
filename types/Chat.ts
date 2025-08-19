@@ -116,6 +116,12 @@ export interface Satisfaction {
   satisfaction_id?: number;
 }
 
+export interface Memo {
+  memo_id: number;
+  memo_content: string;
+  chat_id: number;
+}
+
 export interface ChatHistoryItem {
   id: number | string;
   title: string;

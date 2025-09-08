@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import ReactMarkdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 
 type AnswerViewProps = {
   streamText: string;
@@ -45,7 +47,9 @@ const AnswerView = ({ streamText, className }: AnswerViewProps) => {
         "prose max-w-full break-words text-neutral-950"
       )}
     >
-      <ReactMarkdown>{visibleText}</ReactMarkdown>
+      <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+        {visibleText}
+      </ReactMarkdown>
     </div>
   );
 };

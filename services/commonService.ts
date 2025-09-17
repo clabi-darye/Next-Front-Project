@@ -1,11 +1,8 @@
-import { apiClient } from "./apiClient";
-
 import { ProjectInfo } from "@/types/Common";
-
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_SERVER;
+import { serverClient } from "@/services/common/serverService";
 
 export const fetchProjectInfo = async (): Promise<ProjectInfo> => {
-  return apiClient(`/setting/all`, {
+  return serverClient<ProjectInfo>("/setting/all", {
     method: "GET",
   });
 };
@@ -13,9 +10,12 @@ export const fetchProjectInfo = async (): Promise<ProjectInfo> => {
 export const saveIp = async (
   deviceType: "mobile" | "desktop"
 ): Promise<{ created: boolean; ip_address: string }> => {
-  return apiClient(`/ip?device_type=${deviceType}`, {
-    method: "POST",
-  });
+  return serverClient<{ created: boolean; ip_address: string }>(
+    `/ip?device_type=${deviceType}`,
+    {
+      method: "POST",
+    }
+  );
 };
 
 export const sendStatsOnUnload = (
@@ -23,7 +23,8 @@ export const sendStatsOnUnload = (
   action: "main_screen" | "chatting"
 ) => {
   try {
-    const url = `${BASE_URL}/stats`;
+    // sendBeacon을 통한 비동기 전송 (API routes 경유)
+    const url = "/api/stats";
     const payload = JSON.stringify({ session_time, action });
     const blob = new Blob([payload], { type: "application/json" });
     navigator.sendBeacon(url, blob);

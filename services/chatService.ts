@@ -1,4 +1,4 @@
-import { apiClient } from "./apiClient";
+import { apiClient } from "@/services/common/apiClient";
 
 import {
   Chat,
@@ -8,26 +8,27 @@ import {
   Satisfaction,
   SavedChats,
 } from "@/types/Chat";
+import { serverClient } from "./common/serverService";
 
 export const createChatGroup = async (
   title: string,
   ip_address: string
 ): Promise<ChatGroupResponse> => {
-  return apiClient(`/chat/group`, {
+  return apiClient(`/chat`, {
     method: "POST",
     data: { title, ip_address },
   });
 };
 
 export const saveChat = async (chatData: Chat): Promise<ChatResponse> => {
-  return apiClient(`/chat`, {
+  return apiClient(`/chat/${chatData.chat_group_id}`, {
     method: "POST",
     data: chatData,
   });
 };
 
 export const updateChat = async (chatData: Chat): Promise<ChatResponse> => {
-  return apiClient(`/chat`, {
+  return apiClient(`/chat/${chatData.chat_group_id}`, {
     method: "PUT",
     data: chatData,
   });
@@ -38,7 +39,7 @@ export const createShareCode = async (
 ): Promise<{
   encoded_data: string;
 }> => {
-  return apiClient(`/chat/group/share?groupId=${groupId}`, {
+  return serverClient(`/chat/group/share?groupId=${groupId}`, {
     method: "GET",
   });
 };
@@ -46,7 +47,7 @@ export const createShareCode = async (
 export const fetchSavedChat = async (
   encodedData: string
 ): Promise<SavedChats> => {
-  return apiClient(`/chat/group/share/${encodedData}`, {
+  return serverClient(`/chat/group/share/${encodedData}`, {
     method: "GET",
   });
 };

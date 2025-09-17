@@ -1,14 +1,11 @@
-import { apiClient } from "./apiClient";
+import { apiClient } from "@/services/common/apiClient";
 import { Filter } from "@/types/Filter";
 
 export const fetchFilters = async (params?: {
   year?: string;
   search?: string;
 }): Promise<Filter[]> => {
-  return apiClient(
-    `/chat/filter/tree${params?.search ? `?search=${params?.search}` : ""}`,
-    {
-      method: "GET",
-    }
-  );
+  return apiClient(`/filter`, {
+    method: "GET",
+  });
 };

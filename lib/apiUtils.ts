@@ -36,7 +36,7 @@ export async function createApiHandler({
   endpoint: string;
   method: "GET" | "POST" | "PUT" | "DELETE";
   request: NextRequest;
-  transformBody?: (body: any) => any;
+  transformBody?: (body: unknown) => unknown;
 }) {
   try {
     const headers = {

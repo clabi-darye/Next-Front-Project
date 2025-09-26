@@ -5,7 +5,14 @@ export const fetchFilters = async (params?: {
   year?: string;
   search?: string;
 }): Promise<Filter[]> => {
-  return apiClient(`/filter`, {
+  const queryParams = new URLSearchParams();
+  if (params?.year) queryParams.append("year", params.year);
+  if (params?.search) queryParams.append("search", params.search);
+
+  const queryString = queryParams.toString();
+  const url = queryString ? `/filter?${queryString}` : "/filter";
+
+  return apiClient(url, {
     method: "GET",
   });
 };

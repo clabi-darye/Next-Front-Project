@@ -58,7 +58,7 @@ const ShareDialog = ({ isOpen, onClose }: ShareDialogProps) => {
     };
 
     fetchShareUrl();
-  }, []);
+  }, [isOpen]);
 
   const copyToClipboard = async (text: string) => {
     if (navigator.clipboard && window.isSecureContext) {

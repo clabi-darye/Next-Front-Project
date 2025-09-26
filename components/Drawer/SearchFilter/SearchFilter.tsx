@@ -37,12 +37,12 @@ const SearchFilter = () => {
   );
 
   useEffect(() => {
-    updateFilters();
+    updateFilters("");
   }, []);
 
-  const updateFilters = async (searchText?: string) => {
+  const updateFilters = async (text: string) => {
     try {
-      const filters = await fetchFilters({ search: searchText });
+      const filters = await fetchFilters({ search: text });
       setFilters(filters);
     } catch (error) {
       console.error("Failed to fetch filters", error);
@@ -99,12 +99,22 @@ const SearchFilter = () => {
     [selectedFilters]
   );
 
+  const isAllSelected = useMemo(() => {
+    const rootFilters = filters.filter((f) => f.depth === 1);
+    return (
+      rootFilters.length > 0 &&
+      rootFilters.every((filter) =>
+        selectedFilters.some((sf) => sf.id === filter.id)
+      )
+    );
+  }, [filters, selectedFilters]);
+
   const toggleExpand = (id: number) => {
     setExpandedMap((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   const handleSelectAll = () => {
-    if (selectedFilters.length === filters.length) {
+    if (isAllSelected) {
       setSelectedFilters([]);
     } else {
       const allKeywords = filters.map((f) => f.division).join(", ");
@@ -157,30 +167,9 @@ const SearchFilter = () => {
     setSelectedFilters(uniqueSelected);
   };
 
-  const handleSearchFilter = async () => {
-    await updateFilters(searchText);
+  const handleSearchFilter = async (text: string) => {
+    await updateFilters(text);
     setIsFilterVisible(true);
-  };
-
-  const highlightText = (text: string, keyword: string) => {
-    if (!keyword) return text;
-    const regex = new RegExp(`(${keyword})`, "gi"); // 대소문자 구분 없이 검색
-    const parts = text.split(regex);
-    return parts.map((part, i) =>
-      regex.test(part) ? (
-        <span
-          key={i}
-          style={{
-            backgroundColor:
-              "color-mix(in srgb, var(--point) 20%, transparent)",
-          }}
-        >
-          {part}
-        </span>
-      ) : (
-        part
-      )
-    );
   };
 
   const renderFilterTree = (filter: Filter) => {
@@ -200,11 +189,7 @@ const SearchFilter = () => {
                     onChange={(e) => handleFilterToggle(e, filter)}
                   />
                 }
-                label={
-                  searchText
-                    ? filter.division
-                    : highlightText(filter.division, searchText)
-                }
+                label={filter.division}
               />
             }
           />
@@ -224,12 +209,7 @@ const SearchFilter = () => {
         </FilterListItemButton>
 
         {children.length > 0 && (
-          <Collapse
-            in={isExpanded || !!searchText}
-            timeout="auto"
-            unmountOnExit
-            sx={{ ml: 1 }}
-          >
+          <Collapse in={isExpanded} timeout="auto" unmountOnExit sx={{ ml: 1 }}>
             {children.map(renderFilterTree)}
           </Collapse>
         )}
@@ -246,7 +226,8 @@ const SearchFilter = () => {
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter") handleSearchFilter();
+          if (e.key === "Enter")
+            handleSearchFilter((e.target as HTMLInputElement).value);
         }}
         slotProps={{
           input: {
@@ -267,7 +248,7 @@ const SearchFilter = () => {
               control={
                 <StyledCheckbox
                   size="small"
-                  checked={selectedFilters.length === filters.length}
+                  checked={isAllSelected}
                   onChange={handleSelectAll}
                 />
               }

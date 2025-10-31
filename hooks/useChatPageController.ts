@@ -77,6 +77,11 @@ export const useChatPageController = (
     };
 
     init();
+
+    return () => {
+      setNewQuestion("");
+      queryClient.removeQueries({ queryKey: ["chatGroup", groupId] });
+    };
   }, [groupId]);
 
   // AI 스트리밍 훅 사용

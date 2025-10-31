@@ -2,6 +2,10 @@ import ChatDetailPageView from "@/components/Chat/ChatDetailPageView";
 import { createShareCode, fetchSavedChat } from "@/services/chatService";
 import { base64Decode } from "@/utils/encoding";
 
+// 페이지 캐시 비활성화
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 interface ChatDetailPageProps {
   params: Promise<{ chatGroupId: string }>;
 }
@@ -25,7 +29,7 @@ const ChatDetailPage = async ({ params }: ChatDetailPageProps) => {
       key={`chat-detail-${groupId}-${Date.now()}`}
       initialChatGroupData={chatGroupData}
       groupId={groupId}
-    ></ChatDetailPageView>
+    />
   );
 };
 

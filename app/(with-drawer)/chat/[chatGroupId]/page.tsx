@@ -22,7 +22,7 @@ const ChatDetailPage = async ({ params }: ChatDetailPageProps) => {
 
   return (
     <ChatDetailPageView
-      key={`chat-detail-${groupId}`}
+      key={`chat-detail-${groupId}-${Date.now()}`}
       initialChatGroupData={chatGroupData}
       groupId={groupId}
     ></ChatDetailPageView>

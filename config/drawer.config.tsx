@@ -1,12 +1,6 @@
-import { DrawerItem } from "../types/Drawer";
-
 import SearchIcon from "@mui/icons-material/Search";
-import TuneIcon from "@mui/icons-material/Tune";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
-import ChatHistories from "@/components/Drawer/ChatHistories/ChatHistories";
-import SearchFilter from "@/components/Drawer/SearchFilter/SearchFilter";
-
+import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { SvgIconTypeMap } from "@mui/material/SvgIcon";
 // Drawer 전역 설정 값
 export const drawerConfig = {
   drawerWidth: 240, // drawer 너비(px)
@@ -14,38 +8,18 @@ export const drawerConfig = {
   activeMenu: ["chat", "history", "filter"], // 표시할 메뉴 key 값들
 };
 
-export const drawerMenuList: DrawerItem[] = [
+export const drawerMenuList: {
+  key: string;
+  title: string;
+  icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string };
+  type: string;
+  link: string;
+}[] = [
   {
     key: "home",
     title: "홈",
     icon: SearchIcon,
     type: "menu",
     link: "/",
-  },
-  {
-    key: "style",
-    title: "스타일 변경",
-    icon: TuneIcon,
-    type: "menu",
-  },
-  {
-    key: "chat",
-    title: "새로운 채팅",
-    icon: AddCircleIcon,
-    type: "button",
-    link: "/chat",
-  },
-  {
-    key: "history",
-    title: "질문 내역",
-    icon: ExpandMoreOutlinedIcon,
-    type: "toggle", // 토글형 메뉴 (펼침/접힘)
-    subList: <ChatHistories />, // 토글 펼침 시 렌더링할 컴포넌트
-  },
-  {
-    key: "filter",
-    title: "필터",
-    type: "text", // 토글형 메뉴 (펼침/접힘)
-    subList: <SearchFilter />, // 토글 펼침 시 렌더링할 컴포넌트
   },
 ];

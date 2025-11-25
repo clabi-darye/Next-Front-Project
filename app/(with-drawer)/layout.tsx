@@ -1,5 +1,3 @@
-import PersistentDrawer from "@/components/Drawer/CustomDrawer";
-
 const ChatLayout = ({
   children,
 }: Readonly<{
@@ -7,7 +5,6 @@ const ChatLayout = ({
 }>) => {
   return (
     <>
-      <PersistentDrawer></PersistentDrawer>
       <main>{children}</main>
     </>
   );

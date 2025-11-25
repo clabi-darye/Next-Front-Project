@@ -3,24 +3,21 @@ import type { Metadata, Viewport } from "next";
 import { Providers } from "./providers";
 
 import AppInitializer from "@/components/AppInitializer";
-import { GlobalAlert } from "@/components/Common/GlobalAlert";
-import PostHogProvider from "@/components/PostHogProvider";
-
-import { fetchProjectInfo } from "@/services/commonService";
-
-import "./globals.css";
+import { GlobalAlert } from "@/components/common/GlobalAlert";
 import ThemeProviderClient from "@/components/ThemeProviderClient";
 
+import "./globals.css";
+
 export const metadata: Metadata = {
-  title: "KEPIC Alde",
-  description: "KEPIC Alde",
-  keywords: ["KEPIC", "Alde", "대한전기협회"],
-  publisher: "Clabi",
+  title: "Next Front Project",
+  description: "Next Front Project",
+  keywords: ["Next", "Front", "Project"],
+  publisher: "Next Front Project",
   openGraph: {
-    title: "KEPIC Alde",
-    description: "KEPIC Alde",
-    url: "https://kea.clabi.co.kr/",
-    siteName: "KEPIC Alde",
+    title: "Next Front Project",
+    description: "Next Front Project",
+    url: "https://next-front-project.com/",
+    siteName: "Next Front Project",
     locale: "ko_KR",
     type: "website",
   },
@@ -41,19 +38,15 @@ const RootLayout = async ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const ProjectInfo = await fetchProjectInfo();
-
   return (
     <html lang="ko">
       <body>
         <Providers>
-          <PostHogProvider>
-            <AppInitializer projectinfo={ProjectInfo} />
-            <ThemeProviderClient>
-              <GlobalAlert />
-              {children}
-            </ThemeProviderClient>
-          </PostHogProvider>
+          <AppInitializer projectinfo={null} />
+          <ThemeProviderClient>
+            <GlobalAlert />
+            {children}
+          </ThemeProviderClient>
         </Providers>
       </body>
     </html>

@@ -7,58 +7,17 @@
 @import url("https://use.typekit.net/tzo8iiv.css");
 
 body {
-  font-family: "kea", sans-serif;
-}
-
-/* 접근성: 스크린 리더 전용 클래스 */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  font-family: "sans-serif", sans-serif;
 }
 
 :root {
   /* globals */
   --point: #004785;
-
-  /* drawer */
-  --drawer-bg: #f2f7fb;
-  --drawer-text: #000000;
-  --drawer-hover-bg: #004785;
-  --drawer-hover-bg-secondary: #00478562;
-  --drawer-hover-text: #ffffff;
-  --history-menu-text: #ffffff;
-  --history-menu-bg: #004785;
-  --tag-bg: #004785;
-  --tag-text: #ffffff;
-
-  /* chat */
-  --chat-bg: #fff;
 }
 
 .dark {
   /* globals */
   --point: #004785;
-
-  /* drawer */
-  --drawer-bg: #f2f7fb;
-  --drawer-text: #000000;
-  --drawer-hover-bg: #004785;
-  --drawer-hover-bg-secondary: #00478562;
-  --drawer-hover-text: #ffffff;
-  --history-menu-text: #ffffff;
-  --history-menu-bg: #004785;
-  --tag-bg: #004785;
-  --tag-text: #ffffff;
-
-  /* chat */
-  --chat-bg: #fff;
 }
 
 @keyframes fade-in-scale {
@@ -72,20 +31,6 @@ body {
   }
 }
 
-.animate-fade-in-scale {
-  animation: fade-in-scale 0.3s ease-out forwards;
-}
-
 @theme {
   --color-point: var(--point);
-  --color-drawer-bg: var(--drawer-bg);
-  --color-drawer-hover-bg: var(--drawer-hover-bg);
-  --color-drawer-hover-bg-secondary: var(--drawer-hover-bg-secondary);
-  --color-drawer-hover-text: var(--drawer-hover-text);
-  --color-drawer-text: var(--drawer-text);
-  --color-history-menu-text: var(--history-menu-text);
-  --color-history-menu-bg: var(--history-menu-bg);
-  --color-chat-bg: var(--chat-bg);
-  --color-tag-bg: var(--tag-bg);
-  --color-tag-text: var(--tag-text);
 }

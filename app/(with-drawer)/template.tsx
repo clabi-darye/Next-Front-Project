@@ -1,10 +1,8 @@
 "use client";
 
 import { useDrawerStore } from "@/store/useDrawerStore";
-import { drawerConfig } from "../../config/drawer.config";
 import { useIsMobile } from "@/hooks/useIsMobile";
-
-import AiDisclaimer from "@/components/Common/AiDisclaimer";
+import { drawerConfig } from "../../config/drawer.config";
 
 type TemplateProps = {
   children: React.ReactNode;
@@ -38,7 +36,6 @@ const Template = ({ children }: TemplateProps) => {
         <section className="flex-1 overflow-x-hidden overflow-y-auto">
           {children}
         </section>
-        <AiDisclaimer className="m-auto p-2" />
       </div>
     </section>
   );

@@ -1,6 +1,5 @@
 "use client";
 
-import { yellow } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 
 import { PaletteColorOptions } from "@mui/material/styles";
@@ -21,20 +20,7 @@ declare module "@mui/material/Button" {
 }
 
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#004785",
-      contrastText: "#fff",
-    },
-    warning: {
-      main: yellow[800],
-      contrastText: "#fff",
-    },
-    basic: {
-      main: "#757575",
-      contrastText: "#757575",
-    },
-  },
+  palette: {},
 
   components: {},
 });
